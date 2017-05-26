@@ -40,9 +40,11 @@ namespace template
             get { return _screen; }
         }
 
-        public Camera(Vector3 position, Screen screen)
+        public Camera(Vector3 position, Vector3 direction, Screen screen)
         {
-
+            _position = position;
+            _direction = direction;
+            _screen = screen;
         }
     }
 }

@@ -7,7 +7,15 @@ namespace template
     {
         private Scene _scene;
         private Camera _camera;
+        private Surface _screen;
         private bool _debugMode;
+
+        public Raytracer(Scene scene, Camera camera)
+        {
+            _scene = scene;
+            _camera = camera;
+            _debugMode = true;
+        }
 
         public void Render()
         {
@@ -16,12 +24,8 @@ namespace template
             {
                 for (int y = 0; y < resolution.Y; y++)
                 {
-<<<<<<< HEAD
                     //TODO how to assign a color to a pixel, cast shadow ray function returns color and alle colors for one pixel are added to one color?
-                    TraceRay(new VectorMath.Ray(_camera.Position, _camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position, 100));
-=======
                     TraceRay(new VectorMath.Ray(_camera.Position, _camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position));
->>>>>>> origin/Jacco_v2
                 }
             }
         }
@@ -43,11 +47,12 @@ namespace template
             }
             //calculate the reflected ray and trace this ray too -> recursion
             Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-<<<<<<< HEAD
-            TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection, reflection.Length));
-=======
-            TraceRay(new VectorMath.Ray(intersection.Position, reflection));
->>>>>>> origin/Jacco_v2
+            TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection));
+        }
+
+        private void DrawRay(VectorMath.Ray ray)
+        {
+            _screen.Line((int)ray.origin.X, (int)ray.origin.Z, (int)ray.Position.X, (int)ray.Position.Z, 0xff0000);
         }
     }
 }
