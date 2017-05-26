@@ -18,16 +18,10 @@ namespace template
             get { return _normal; }
         }
 
-        public Vector3 Position
+        public VectorMath.Ray Ray
         {
-            get { return _ray.origin + _ray.magnitude * _ray.direction; }
+            get { return _ray; }
         }
-
-        public float Distance
-        {
-            get { return _ray.magnitude; }
-        }
-
 
         public Intersection(Primitive primitive, Vector3 normal, VectorMath.Ray ray)
         {

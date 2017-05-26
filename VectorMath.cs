@@ -16,6 +16,11 @@ namespace template
                 magnitude = d.Length;
                 direction = Vector3.Normalize(d);
             }
+
+            public Vector3 Position
+            {
+                get { return origin + magnitude * direction; }
+            }
         }
 
         public static float Dot(Vector3 v1, Vector3 v2)

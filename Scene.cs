@@ -31,9 +31,9 @@ namespace template
             foreach (Primitive p in primitives)
             {
                 intersection = p.GetIntersection(ray);
-                if(intersection != null && intersection.Distance < minD)
+                if(intersection != null && intersection.Ray.magnitude < minD)
                 {
-                    minD = intersection.Distance;
+                    minD = intersection.Ray.magnitude;
                     closest = intersection;
                 }
                 intersection = null;

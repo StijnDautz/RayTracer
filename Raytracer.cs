@@ -41,6 +41,15 @@ namespace template
             }
             return pixelArray;
         }
+        private Surface _screen;
+        private bool _debugMode;
+
+        public Raytracer(Scene scene, Camera camera)
+        {
+            _scene = scene;
+            _camera = camera;
+            _debugMode = true;
+        }
 
         public void Render()
         {
@@ -49,6 +58,7 @@ namespace template
             {
                 for (int y = 0; y < resolution.Y; y++)
                 {
+                    //TODO how to assign a color to a pixel, cast shadow ray function returns color and alle colors for one pixel are added to one color?
                     TraceRay(new VectorMath.Ray(_camera.Position, _camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position));
                 }
             }
@@ -58,13 +68,25 @@ namespace template
         {
             //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
             Intersection intersection = _scene.GetClosestIntersection(ray);
+
+            //if in debugMode draw this vector in the debugwindow
+            if(_debugMode)
+            {
+                
+            }
             if (!intersection.primitive.IsMirror)
             {
                 //cast shadow ray
+                //TODO create cast shadow ray function that returns a color?
             }
             //calculate the reflected ray and trace this ray too -> recursion
             Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-            TraceRay(new VectorMath.Ray(intersection.Position, reflection));
+            TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection));
+        }
+
+        private void DrawRay(VectorMath.Ray ray)
+        {
+            _screen.Line((int)ray.origin.X, (int)ray.origin.Z, (int)ray.Position.X, (int)ray.Position.Z, 0xff0000);
         }
     }
 }
