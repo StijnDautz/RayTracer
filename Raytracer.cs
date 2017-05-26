@@ -15,7 +15,7 @@ namespace template
             {
                 for (int y = 0; y < resolution.Y; y++)
                 {
-                    TraceRay(new VectorMath.Ray(_camera.Position, _camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position, 100));
+                    TraceRay(new VectorMath.Ray(_camera.Position, _camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position));
                 }
             }
         }
@@ -30,7 +30,7 @@ namespace template
             }
             //calculate the reflected ray and trace this ray too -> recursion
             Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-            TraceRay(new VectorMath.Ray(intersection.Position, reflection, reflection.Length));
+            TraceRay(new VectorMath.Ray(intersection.Position, reflection));
         }
     }
 }

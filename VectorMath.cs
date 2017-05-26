@@ -10,11 +10,11 @@ namespace template
             public Vector3 direction;
             public float magnitude;
 
-            public Ray(Vector3 o, Vector3 d, float m)
+            public Ray(Vector3 o, Vector3 d)
             {
                 origin = o;
-                direction = d;
-                magnitude = m;
+                magnitude = d.Length;
+                direction = Vector3.Normalize(d);
             }
         }
 
