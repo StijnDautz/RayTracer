@@ -1,0 +1,10 @@
+C:\Users\Jacco\Downloads\template_INFOGR2017 (1)\bin\Debug\template.exe.config
+C:\Users\Jacco\Downloads\template_INFOGR2017 (1)\bin\Debug\template.exe
+C:\Users\Jacco\Downloads\template_INFOGR2017 (1)\bin\Debug\template.pdb
+C:\Users\Jacco\Downloads\template_INFOGR2017 (1)\bin\Debug\OpenTK.dll
+C:\Users\Jacco\Downloads\template_INFOGR2017 (1)\obj\Debug\template.csprojResolveAssemblyReference.cache
+C:\Users\Jacco\Downloads\template_INFOGR2017 (1)\obj\Debug\template.exe
+C:\Users\Jacco\Downloads\template_INFOGR2017 (1)\obj\Debug\template.pdb
+D:\Users\Stijn\Downloads\Assignment_2\Assignment 2\obj\Debug\template.csprojResolveAssemblyReference.cache
+D:\Users\Stijn\Downloads\Assignment_2\Assignment 2\obj\Debug\template.exe
+D:\Users\Stijn\Downloads\Assignment_2\Assignment 2\obj\Debug\template.pdb
