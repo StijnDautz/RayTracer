@@ -16,8 +16,12 @@ namespace template
             {
                 for (int y = 0; y < resolution.Y; y++)
                 {
+<<<<<<< HEAD
                     //TODO how to assign a color to a pixel, cast shadow ray function returns color and alle colors for one pixel are added to one color?
                     TraceRay(new VectorMath.Ray(_camera.Position, _camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position, 100));
+=======
+                    TraceRay(new VectorMath.Ray(_camera.Position, _camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position));
+>>>>>>> origin/Jacco_v2
                 }
             }
         }
@@ -39,7 +43,11 @@ namespace template
             }
             //calculate the reflected ray and trace this ray too -> recursion
             Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
+<<<<<<< HEAD
             TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection, reflection.Length));
+=======
+            TraceRay(new VectorMath.Ray(intersection.Position, reflection));
+>>>>>>> origin/Jacco_v2
         }
     }
 }
