@@ -12,6 +12,13 @@ namespace template
             _radius = radius;
         }
 
+        public float Radius
+        {
+            get
+            {
+                return _radius;
+            }
+        }
         public override Intersection GetIntersection(VectorMath.Ray ray)
         {
             /*Vector3 centerToOrigin = ray.origin - Position;
@@ -29,13 +36,13 @@ namespace template
             return null;*/
             Vector3 L = Position - ray.origin;
             Vector3 D = ray.direction;
-            float tca = VectorMath.Dot(L, D); 
+            float tca = VectorMath.Dot(L, D);
 
             if (tca < 0) return null;
 
             float d = (float)Math.Sqrt(tca * tca + L.Length * L.Length); //d = minimum distance (perpendicular) between Sphere's center and the ray
 
-            if (d < 0 || d > _radius) return null; 
+            if (d < 0 || d > _radius) return null;
 
             float thc = (float)Math.Sqrt(_radius * _radius + d * d);
             Vector3 intersectionPoint = ray.origin + (tca - thc) * ray.direction;

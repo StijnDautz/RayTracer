@@ -5,8 +5,14 @@ namespace template
 {
     class Scene
     {
-        List<Light> lights;
-        List<Primitive> primitives;
+        public List<Light> lights;
+        public List<Primitive> primitives;
+
+        public Scene(List<Light> lights, List<Primitive> primitives)
+        {
+            this.lights = lights;
+            this.primitives = primitives;
+        }
 
         protected void AddLight(Light l)
         {
