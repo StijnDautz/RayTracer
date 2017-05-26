@@ -17,19 +17,20 @@ namespace template
             primitives.Add(p);
         }
 
-        public Intersection GetClosestIntersection(Raytracer.Ray ray)
+        public Intersection GetClosestIntersection(VectorMath.Ray ray)
         {
             float minD = float.MaxValue;
             Intersection intersection = null;
-            Intersection closest;
+            Intersection closest = null;
             foreach (Primitive p in primitives)
             {
-                Intersection i = p.GetIntersection(ray);
-                if(i != null && intersection.distance < minD)
+                intersection = p.GetIntersection(ray);
+                if(intersection != null && intersection.Distance < minD)
                 {
-                    minD = intersection.distance;
+                    minD = intersection.Distance;
                     closest = intersection;
                 }
+                intersection = null;
             }
             return closest;
         }

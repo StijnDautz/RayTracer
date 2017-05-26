@@ -5,6 +5,7 @@ namespace template
     abstract class Primitive
     {
         private Vector3 _position;
+        private bool _isMirror;
 
         public Vector3 Position
         {
@@ -12,19 +13,21 @@ namespace template
             get { return _position; }
         }
 
+        //TODO add materials and move this property to the material
+        public bool IsMirror
+        {
+            get { return _isMirror; }
+            set { _isMirror = value; }
+        }
+
         public Primitive(Vector3 position)
         {
             _position = position;
         }
 
-        public virtual Intersection GetIntersection(Raytracer.Ray ray)
+        public virtual Intersection GetIntersection(VectorMath.Ray ray)
         {
             return null;
-        }
-
-        public float Dot(Vector3 v1, Vector3 v2)
-        {
-            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
     }
 }

@@ -11,13 +11,13 @@ namespace template
             _normal = normal;
         }
 
-        public override Intersection GetIntersection(Raytracer.Ray ray)
+        public override Intersection GetIntersection(VectorMath.Ray ray)
         {
             //if the ray is not parralel to the plane, calculate the intersection point
-            if(Dot(_normal, ray.direction) != 0)
+            if(VectorMath.Dot(_normal, ray.direction) != 0)
             {
-                Vector3 p = ray.origin + (-(Dot(ray.origin, _normal) + Position.Length) / Dot(ray.direction, _normal)) * ray.direction;
-                return new Intersection(this, _normal, p.Length);
+                Vector3 p = ray.origin + (-(VectorMath.Dot(ray.origin, _normal) + Position.Length) / VectorMath.Dot(ray.direction, _normal)) * ray.direction;
+                return new Intersection(this, _normal, ray);
             }
             else { return null; }
         }
