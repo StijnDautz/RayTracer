@@ -30,7 +30,7 @@ namespace template
                         {
                             if(scene.primitives[i] is Sphere)
                             {
-                                if (((x - scene.primitives[i].Position.X) * (x - scene.primitives[i].Position.X) + (y - scene.primitives[i].Position.Y) * (y - scene.primitives[i].Position.Y)) == (scene.primitives[i] as Sphere).Radius)
+                                if (((x - scene.primitives[i].Position.X*_screen.Scale) * (x - scene.primitives[i].Position.X*_screen.Scale) + (y - scene.primitives[i].Position.Y * _screen.Scale) * (y - scene.primitives[i].Position.Y * _screen.Scale)) == (scene.primitives[i] as Sphere).Radius * _screen.Scale)
                                 {
                                     pixelArray[x, y] = Color.Red;
                                 }

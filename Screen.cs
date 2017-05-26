@@ -5,9 +5,21 @@ namespace template
 {
     class Screen : Plane
     {
+        private float _scale = 512 / 10; //512x512 pixels in a 10x10 box
         private Point _resolution;
         Vector3[] corners = new Vector3[4];
 
+        public float Scale
+        {
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                _scale = value;
+            }
+        }
         public Point Resolution
         {
             get { return _resolution; }
