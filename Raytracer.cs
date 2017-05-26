@@ -8,45 +8,14 @@ namespace template
     {
         private Scene _scene;
         private Camera _camera;
-        private Screen _screen;
+        private Surface _screen;
 
-        public Color[,] CreatePixelArray()
-        {
-            List<Primitive> primitives = new List<Primitive>();
-            primitives.Add(new Sphere(new Vector3(1, 0, 1), 1));
-            primitives.Add(new Sphere(new Vector3(4, 0, 1), 1));
-            primitives.Add(new Sphere(new Vector3(7, 0, 1), 1));
-            Scene scene = new Scene(new List<Light>(), primitives);
 
-            Color[,] pixelArray = new Color[_screen.Resolution.X, _screen.Resolution.Y];
-            if (Application.debug)
-            {
-                //Draw circles
-                for (int x = 0; x < pixelArray.GetLength(0); x++)
-                {
-                    for (int y = 0; y < pixelArray.GetLength(1); y++)
-                    {
-                        for (int i = 0; i < scene.primitives.Count; i++)
-                        {
-                            if(scene.primitives[i] is Sphere)
-                            {
-                                if (((x - scene.primitives[i].Position.X) * (x - scene.primitives[i].Position.X) + (y - scene.primitives[i].Position.Y) * (y - scene.primitives[i].Position.Y)) == (scene.primitives[i] as Sphere).Radius)
-                                {
-                                    pixelArray[x, y] = Color.Red;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return pixelArray;
-        }
-
-        public Raytracer(Scene scene, Camera camera)
+        public Raytracer(Scene scene, Camera camera, Surface screen)
         {
             _scene = scene;
             _camera = camera;
-            _debugMode = true;
+            _screen = screen;
         }
 
         public void Render()
@@ -67,24 +36,57 @@ namespace template
             //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
             Intersection intersection = _scene.GetClosestIntersection(ray);
 
-            //if in debugMode draw this vector in the debugwindow
-            if(_debugMode)
+            if (intersection != null)
             {
+                //if in debugMode draw this vector in the debugwindow
+                DrawRay(ray);
+                /*if (!intersection.primitive.IsMirror)
+                {
+                    //cast shadow ray
+                    //TODO create cast shadow ray function that returns a color?
+                }*/
+                //calculate the reflected ray and trace this ray too -> recursion
+                Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
+                TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection));
                 
             }
-            if (!intersection.primitive.IsMirror)
-            {
-                //cast shadow ray
-                //TODO create cast shadow ray function that returns a color?
-            }
-            //calculate the reflected ray and trace this ray too -> recursion
-            Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-            TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection));
         }
 
         private void DrawRay(VectorMath.Ray ray)
         {
             _screen.Line((int)ray.origin.X, (int)ray.origin.Z, (int)ray.Position.X, (int)ray.Position.Z, 0xff0000);
+        }
+
+        public Color[,] CreatePixelArray()
+        {
+            List<Primitive> primitives = new List<Primitive>();
+            primitives.Add(new Sphere(new Vector3(1, 0, 1), 1));
+            primitives.Add(new Sphere(new Vector3(4, 0, 1), 1));
+            primitives.Add(new Sphere(new Vector3(7, 0, 1), 1));
+            Scene scene = new Scene(new List<Light>(), primitives);
+
+            Color[,] pixelArray = new Color[_camera.Screen.Resolution.X, _camera.Screen.Resolution.Y];
+            if (Application.debug)
+            {
+                //Draw circles
+                for (int x = 0; x < pixelArray.GetLength(0); x++)
+                {
+                    for (int y = 0; y < pixelArray.GetLength(1); y++)
+                    {
+                        for (int i = 0; i < scene.primitives.Count; i++)
+                        {
+                            if (scene.primitives[i] is Sphere)
+                            {
+                                if (((x - scene.primitives[i].Position.X) * (x - scene.primitives[i].Position.X) + (y - scene.primitives[i].Position.Y) * (y - scene.primitives[i].Position.Y)) == (scene.primitives[i] as Sphere).Radius)
+                                {
+                                    pixelArray[x, y] = Color.Red;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return pixelArray;
         }
     }
 }
