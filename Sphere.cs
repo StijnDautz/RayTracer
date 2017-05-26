@@ -33,7 +33,7 @@ namespace template
 
             if (tca < 0) return null;
 
-            float d = (float)Math.Sqrt(tca * tca + L.Length * L.Length); //d = minimum distance between Sphere's center and the ray
+            float d = (float)Math.Sqrt(tca * tca + L.Length * L.Length); //d = minimum distance (perpendicular) between Sphere's center and the ray
 
             if (d < 0 || d > _radius) return null; 
 
