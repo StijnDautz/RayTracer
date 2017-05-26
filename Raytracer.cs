@@ -41,14 +41,12 @@ namespace template
             }
             return pixelArray;
         }
-        private Surface _screen;
-        private bool _debugMode;
 
         public Raytracer(Scene scene, Camera camera)
         {
             _scene = scene;
             _camera = camera;
-            _debugMode = true;
+            Application.debug = true;
         }
 
         public void Render()
@@ -70,7 +68,7 @@ namespace template
             Intersection intersection = _scene.GetClosestIntersection(ray);
 
             //if in debugMode draw this vector in the debugwindow
-            if(_debugMode)
+            if(Application.debug)
             {
                 
             }
