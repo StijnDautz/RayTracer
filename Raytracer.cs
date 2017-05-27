@@ -60,9 +60,9 @@ namespace template
         public Color[,] CreateDebugPixelArray()
         {
             List<Primitive> primitives = new List<Primitive>();
-            primitives.Add(new Sphere(new Vector3(1, 0, 1), 1));
-            primitives.Add(new Sphere(new Vector3(4, 0, 1), 1));
-            primitives.Add(new Sphere(new Vector3(7, 0, 1), 1));
+            primitives.Add(new Sphere(new Vector3(1, 0, 1), 1,255000000f));
+            primitives.Add(new Sphere(new Vector3(4, 0, 1), 1, 255000000f));
+            primitives.Add(new Sphere(new Vector3(7, 0, 1), 1, 255000000f));
             Scene scene = new Scene(new List<Light>(), primitives);
 
             Color[,] pixelArray = new Color[_camera.Screen.Resolution.X, _camera.Screen.Resolution.Y];
