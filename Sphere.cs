@@ -1,15 +1,21 @@
 ﻿using OpenTK;
 using System;
+using System.Drawing;
 
 namespace template
 {
     class Sphere : Primitive
     {
-        private float _radius;
+        private int _radius;
 
-        public Sphere(Vector3 position, float radius) : base(position)
+        public Sphere(Vector3 position, int radius, float color = 000000000f) : base(position, color)
         {
             _radius = radius;
+        }
+
+        public int Radius
+        {
+            get { return _radius; }
         }
 
         public override Intersection GetIntersection(VectorMath.Ray ray)
@@ -19,14 +25,15 @@ namespace template
             float b = VectorMath.Dot(2 * ray.direction, centerToOrigin);
             float c = VectorMath.Dot(centerToOrigin, centerToOrigin) - _radius * _radius;
 
-            float d = -b + (float)Math.Sqrt(b * b - 4 * a * c) / 2 * a;
-            if(d < 0)
+            float d = (float)b * b - 4 * a * c;
+            if (d < 0)
             { return null; }
             else
             {
-                
+                Vector3 intersectionPoint = ray.origin + ray.direction * (float)((-b - Math.Sqrt(d)) / (2 * a));
+                Vector3 normal = Vector3.Normalize(intersectionPoint - Position);
+                return new Intersection(this, normal, ray, (intersectionPoint - ray.origin).Length);
             }
-            return null;
         }
     }
 }

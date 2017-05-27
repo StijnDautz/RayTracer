@@ -3,7 +3,7 @@ using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace Template
+namespace template
 {
 	public class OpenTKApp : GameWindow
 	{
@@ -17,11 +17,11 @@ namespace Template
 			GL.Enable( EnableCap.Texture2D );
 			GL.Disable( EnableCap.DepthTest );
 			GL.Hint( HintTarget.PerspectiveCorrectionHint, HintMode.Nicest );
-			ClientSize = new Size( 640, 400 );
+			ClientSize = new Size( 1024, 512 );
 			game = new Game();
-			game.screen = new Surface( Width, Height );
-			Sprite.target = game.screen;
-			screenID = game.screen.GenTexture();
+			game.surface = new Surface( Width, Height );
+			Sprite.target = game.surface;
+			screenID = game.surface.GenTexture();
 			game.Init();
 		}
 		protected override void OnUnload( EventArgs e )
@@ -56,9 +56,9 @@ namespace Template
 			// convert Game.screen to OpenGL texture
 			GL.BindTexture( TextureTarget.Texture2D, screenID );
 			GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 
-						   game.screen.width, game.screen.height, 0, 
+						   game.surface.width, game.surface.height, 0, 
 						   OpenTK.Graphics.OpenGL.PixelFormat.Bgra, 
-						   PixelType.UnsignedByte, game.screen.pixels 
+						   PixelType.UnsignedByte, game.surface.pixels 
 						 );
 			// clear window contents
 			GL.Clear( ClearBufferMask.ColorBufferBit );

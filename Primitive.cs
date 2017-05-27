@@ -2,10 +2,11 @@
 
 namespace template
 {
-    abstract class Primitive
+    public abstract class Primitive
     {
         private Vector3 _position;
         private bool _isMirror;
+        private float _color;
 
         public Vector3 Position
         {
@@ -20,9 +21,10 @@ namespace template
             set { _isMirror = value; }
         }
 
-        public Primitive(Vector3 position)
+        public Primitive(Vector3 position, float color = 000000000f)
         {
             _position = position;
+            _color = color;
         }
 
         public virtual Intersection GetIntersection(VectorMath.Ray ray)
