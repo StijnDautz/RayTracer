@@ -21,19 +21,23 @@ namespace template
         }
         public override Intersection GetIntersection(VectorMath.Ray ray)
         {
-            /*Vector3 centerToOrigin = ray.origin - Position;
+            Vector3 centerToOrigin = ray.origin - Position;
             float a = VectorMath.Dot(ray.direction, ray.direction);
             float b = VectorMath.Dot(2 * ray.direction, centerToOrigin);
             float c = VectorMath.Dot(centerToOrigin, centerToOrigin) - _radius * _radius;
 
-            float d = -b + (float)Math.Sqrt(b * b - 4 * a * c) / 2 * a;
+            float d = (float)Math.Sqrt(b * b - 4 * a * c);
+            Vector3 intersectionPoint = ray.origin + ray.direction * (float)((-b - Math.Sqrt(d)) / (2 * a));
+            Vector3 normal = Vector3.Normalize(intersectionPoint - Position);
             if(d < 0)
             { return null; }
             else
             {
-                
+                return new Intersection(this, normal, ray);
             }
-            return null;*/
+            
+
+            /*//Geometry solution:
             Vector3 L = Position - ray.origin;
             Vector3 D = ray.direction;
             float tca = VectorMath.Dot(L, D);
@@ -47,7 +51,7 @@ namespace template
             float thc = (float)Math.Sqrt(_radius * _radius + d * d);
             Vector3 intersectionPoint = ray.origin + (tca - thc) * ray.direction;
             Vector3 normal = Vector3.Normalize(intersectionPoint - Position);
-            return new Intersection(this, normal, ray);
+            return new Intersection(this, normal, ray);*/
         }
     }
 }
