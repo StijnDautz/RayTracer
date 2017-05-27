@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using System;
+using System.Drawing;
 
 namespace template
 {
@@ -7,7 +8,7 @@ namespace template
     {
         private float _radius;
 
-        public Sphere(Vector3 position, float radius) : base(position)
+        public Sphere(Vector3 position, Color color, float radius) : base(position, color)
         {
             _radius = radius;
         }

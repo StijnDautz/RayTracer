@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System.Drawing;
 
 namespace template
 {
@@ -6,7 +7,7 @@ namespace template
     {
         private Vector3 _normal;
         
-        public Plane(Vector3 position, Vector3 normal) : base(position)
+        public Plane(Vector3 position, Color color, Vector3 normal) : base(position, color)
         {
             _normal = normal;
         }
