@@ -8,6 +8,7 @@ namespace template
         private Scene _scene;
         private Camera _camera;
         private Surface _surface;
+        private int _rayCounter = 0; //So that not EVERY ray gets drawn
 
         public Raytracer(Scene scene, Camera camera, Surface surface)
         {
@@ -19,7 +20,7 @@ namespace template
         public void Render()
         {
             Point resolution = _camera.Screen.Resolution;
-            for (int x = 0; x < resolution.X; x++)
+            for (int x = 0; x < resolution.X; x++) //instead of 0 -> resolution.X
             {
                 for (int y = 0; y < resolution.Y; y++)
                 {
@@ -41,7 +42,7 @@ namespace template
 
             if (intersection != null)
             {
-                _surface.DrawRay(ray, _camera.Screen);
+                    _surface.DrawRay(ray, _camera.Screen);
 
                 /*if (!intersection.primitive.IsMirror)
                 {

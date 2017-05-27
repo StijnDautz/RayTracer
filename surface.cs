@@ -206,8 +206,8 @@ namespace template
 				y1 *= 8192;
 				for( int i = 0; i < l; i++ )
 				{
-					pixels[x1++ + (y1 / 8192) * width] = c;
-					y1 += dy;
+                        pixels[x1++ + (y1 / 8192) * width] = c;
+                        y1 += dy;
 				}
 			}
 			else
@@ -219,8 +219,8 @@ namespace template
 				x1 *= 8192;
 				for( int i = 0; i < l; i++ )
 				{
-					pixels[x1 / 8192 + y1++ * width] = c;
-					x1 += dx;
+                        pixels[x1 / 8192 + y1++ * width] = c;
+                        x1 += dx;                  
 				}
 			}
 		}
