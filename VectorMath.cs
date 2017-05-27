@@ -2,7 +2,7 @@
 
 namespace template
 {
-    static class VectorMath
+    public static class VectorMath
     {
         public struct Ray
         {

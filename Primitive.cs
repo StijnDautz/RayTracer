@@ -2,7 +2,7 @@
 
 namespace template
 {
-    abstract class Primitive
+    public abstract class Primitive
     {
         private Vector3 _position;
         private bool _isMirror;

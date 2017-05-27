@@ -2,7 +2,7 @@
 
 namespace template
 {
-    class Intersection
+    public class Intersection
     {
         private Primitive _primitive;
         private Vector3 _normal;

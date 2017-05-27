@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace template
 {
-    class Plane : Primitive
+    public class Plane : Primitive
     {
         private Vector3 _normal;
         
