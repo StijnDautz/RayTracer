@@ -150,10 +150,10 @@ namespace template
             }
         }
 
-        public void DrawRay(VectorMath.Ray ray, Screen screen)
+        public void DrawRay(VectorMath.Ray ray, Screen screen, float distance)
         {
             Point p1 = screen.ConvertToScreenCoords(ray.origin);
-            Point p2 = screen.ConvertToScreenCoords(ray.Position);
+            Point p2 = screen.ConvertToScreenCoords(ray.origin + ray.direction * distance);
             Line(p1.X, p1.Y, p2.X, p2.Y, 0xff0000);
         }
 

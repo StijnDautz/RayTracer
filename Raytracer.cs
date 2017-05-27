@@ -42,7 +42,14 @@ namespace template
 
             if (intersection != null)
             {
-                    _surface.DrawRay(ray, _camera.Screen);
+                if (ray.direction.Y == 0)
+                {
+                    if (_rayCounter % 10 == 0)
+                    {
+                        _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
+                    }
+                    _rayCounter++;
+                }
 
                 /*if (!intersection.primitive.IsMirror)
                 {

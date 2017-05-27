@@ -18,7 +18,7 @@ namespace template
             if(VectorMath.Dot(_normal, ray.direction) != 0)
             {
                 Vector3 p = ray.origin + (-(VectorMath.Dot(ray.origin, _normal) + Position.Length) / VectorMath.Dot(ray.direction, _normal)) * ray.direction;
-                return new Intersection(this, _normal, ray);
+                return new Intersection(this, _normal, ray, (p - ray.origin).Length);
             }
             else { return null; }
         }

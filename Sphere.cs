@@ -32,7 +32,7 @@ namespace template
             {
                 Vector3 intersectionPoint = ray.origin + ray.direction * (float)((-b - Math.Sqrt(d)) / (2 * a));
                 Vector3 normal = Vector3.Normalize(intersectionPoint - Position);
-                return new Intersection(this, normal, ray);
+                return new Intersection(this, normal, ray, (intersectionPoint - ray.origin).Length);
             }
         }
     }
