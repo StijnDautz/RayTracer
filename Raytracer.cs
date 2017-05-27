@@ -9,7 +9,7 @@ namespace template
         private Camera _camera;
         private Surface _surface;
         private int _rayCounter = 0; //So that not EVERY ray gets drawn
-        private int maxReflection = 4;
+        private int maxReflection = 2;
 
         public Raytracer(Scene scene, Camera camera, Surface surface)
         {
@@ -43,16 +43,16 @@ namespace template
                 Intersection intersection = _scene.GetClosestIntersection(ray);
 
 
-            if (intersection != null) //Dynamic Debug Mode
-            {
-                if (ray.direction.Y == 0)
+                if (intersection != null)
                 {
-                    //if (_rayCounter % 10 == 0)
-                    //{
-                        _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
-                    //}
-                    //_rayCounter++;
-                }
+                    if (ray.direction.Y == 0)
+                    {
+                        if (_rayCounter % 3 == 0)
+                        {
+                            _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
+                        }
+                        _rayCounter++;
+                    }
 
                     /*if (!intersection.primitive.IsMirror)
                     {
@@ -61,7 +61,7 @@ namespace template
                     }*/
                     //calculate the reflected ray and trace this ray too -> recursion
                     Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                    TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection), ++reflectionNum);
+                    TraceRay(new VectorMath.Ray(ray.origin + ray.direction * intersection.Distance, reflection * 100), ++reflectionNum);
                 }
             }
         }

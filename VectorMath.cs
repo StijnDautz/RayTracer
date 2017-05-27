@@ -30,7 +30,7 @@ namespace template
 
         public static Vector3 Reflect(Vector3 incoming, Vector3 normal)
         {
-            return incoming + normal * (2 * Dot(incoming, normal));
+            return incoming - normal * (2 * Dot(incoming, normal));
         }
     }
 }
