@@ -37,29 +37,32 @@ namespace template
 
         private void TraceRay(VectorMath.Ray ray, int reflectionNum)
         {
-            //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
-            Intersection intersection = _scene.GetClosestIntersection(ray);
-
-
-            if (intersection != null)
+            if (reflectionNum < maxReflection)
             {
-                if (ray.direction.Y == 0)
-                {
-                    if (_rayCounter % 10 == 0)
-                    {
-                        _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
-                    }
-                    _rayCounter++;
-                }
+                //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
+                Intersection intersection = _scene.GetClosestIntersection(ray);
 
-                /*if (!intersection.primitive.IsMirror)
+
+                if (intersection != null)
                 {
-                    //cast shadow ray
-                    //TODO create cast shadow ray function that returns a color?
-                }*/
-                //calculate the reflected ray and trace this ray too -> recursion
-                Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection), ++reflectionNum);            
+                    if (ray.direction.Y == 0)
+                    {
+                        if (_rayCounter % 10 == 0)
+                        {
+                            _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
+                        }
+                        _rayCounter++;
+                    }
+
+                    /*if (!intersection.primitive.IsMirror)
+                    {
+                        //cast shadow ray
+                        //TODO create cast shadow ray function that returns a color?
+                    }*/
+                    //calculate the reflected ray and trace this ray too -> recursion
+                    Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
+                    TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection), ++reflectionNum);
+                }
             }
         }
     }
