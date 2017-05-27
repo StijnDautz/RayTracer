@@ -5,7 +5,7 @@ namespace template
 {
     public class Screen : Plane
     {
-        private static float _scale = 10/512; //512x512 pixels in a 10x10 box as a multiplier (faster than dividing)
+        private float _scale = 512 / 10; //512x512 pixels in a 10x10 box
         private Point _resolution;
         private Rectangle _dimensions;
         Vector3[] corners = new Vector3[4];
@@ -70,7 +70,7 @@ namespace template
         //TODO make world dimension variable
         public Point ConvertToScreenCoords(Vector3 v)
         {
-            int x = (int)((_dimensions.Right + v.X) * (_resolution.X / 10));
+            int x = (int)((_dimensions.Right + v.X) * (_resolution.X / 10)) + 512;
             int y = (int)((_dimensions.Top - v.Z) * (_resolution.Y / 10));
             return new Point(x, y);
         }
