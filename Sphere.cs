@@ -8,11 +8,7 @@ namespace template
     {
         private int _radius;
 
-<<<<<<<<< Temporary merge branch 1
-        public Sphere(Vector3 position, int radius) : base(position)
-=========
-        public Sphere(Vector3 position, float radius, float color = 000000000f) : base(position, color)
->>>>>>>>> Temporary merge branch 2
+        public Sphere(Vector3 position, int radius, float color = 000000000f) : base(position, color)
         {
             _radius = radius;
         }

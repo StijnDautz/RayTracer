@@ -145,7 +145,7 @@ namespace template
             Point pixel;
             for (double i = 0; i < boundary; i+=0.001)
             {
-                pixel = screen.ConvertToScreenCoords(new Vector3(center.X + radius * (float)Math.Cos(i), 0, center.Y + radius * (float)Math.Sin(i)));
+                pixel = screen.ConvertToScreenCoords(new Vector3(center.X + radius * (float)Math.Cos(i), 0, center.Z + radius * (float)Math.Sin(i)));
                 pixels[pixel.X + pixel.Y * width] = color;
             }
         }
