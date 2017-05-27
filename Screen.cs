@@ -5,7 +5,7 @@ namespace template
 {
     class Screen : Plane
     {
-        private float _scale = 512 / 10; //512x512 pixels in a 10x10 box
+        private static float _scale = 10/512; //512x512 pixels in a 10x10 box as a multiplier (faster than dividing)
         private Point _resolution;
         Vector3[] corners = new Vector3[4];
 

@@ -54,10 +54,10 @@ namespace template
 
         private void DrawRay(VectorMath.Ray ray)
         {
-            _screen.Line((int)ray.origin.X, (int)ray.origin.Z, (int)ray.Position.X, (int)ray.Position.Z, 0xff0000);
+            _screen.Line((int)ray.origin.X + 512, (int)ray.origin.Z, (int)ray.Position.X + 512, (int)ray.Position.Z, 0xff0000);
         }
 
-        public Color[,] CreatePixelArray()
+        public Color[,] CreateDebugPixelArray()
         {
             List<Primitive> primitives = new List<Primitive>();
             primitives.Add(new Sphere(new Vector3(1, 0, 1), 1));
@@ -66,9 +66,8 @@ namespace template
             Scene scene = new Scene(new List<Light>(), primitives);
 
             Color[,] pixelArray = new Color[_camera.Screen.Resolution.X, _camera.Screen.Resolution.Y];
-            if (Application.debug)
-            {
                 //Draw circles
+                
                 for (int x = 0; x < pixelArray.GetLength(0); x++)
                 {
                     for (int y = 0; y < pixelArray.GetLength(1); y++)
@@ -85,7 +84,6 @@ namespace template
                         }
                     }
                 }
-            }
             return pixelArray;
         }
     }
