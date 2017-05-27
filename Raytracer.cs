@@ -43,13 +43,13 @@ namespace template
 
             if (intersection != null) //Dynamic Debug Mode
             {
-                //if (ray.direction.Y == 0)
+                if (ray.direction.Y == 0)
                 {
                     //if (_rayCounter % 10 == 0)
-                    {
+                    //{
                         _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
-                    }
-                    _rayCounter++;
+                    //}
+                    //_rayCounter++;
                 }
 
                 /*if (!intersection.primitive.IsMirror)
