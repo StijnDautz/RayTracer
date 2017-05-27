@@ -61,7 +61,7 @@ namespace template
                     }*/
                     //calculate the reflected ray and trace this ray too -> recursion
                     Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                    TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection), ++reflectionNum);
+                    TraceRay(new VectorMath.Ray(ray.origin + ray.direction * intersection.Distance, reflection), ++reflectionNum);
                 }
             }
         }
