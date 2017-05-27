@@ -8,7 +8,7 @@ namespace template
     {
         private int _radius;
 
-        public Sphere(Vector3 position, int radius, float color = 000000000f) : base(position, color)
+        public Sphere(Vector3 position, int radius, Vector3 color) : base(position, color)
         {
             _radius = radius;
         }
