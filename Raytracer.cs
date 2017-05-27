@@ -9,6 +9,7 @@ namespace template
         private Camera _camera;
         private Surface _surface;
         private int _rayCounter = 0; //So that not EVERY ray gets drawn
+        private int maxReflection = 4;
 
         public Raytracer(Scene scene, Camera camera, Surface surface)
         {
@@ -26,7 +27,7 @@ namespace template
                 {
                     //TODO how to assign a color to a pixel, cast shadow ray function returns color and alle colors for one pixel are added to one color?
                     //TODO re add magnitude variable to constructer to preven direction vector * 10
-                    TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position) * 10));
+                    TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position) * 10), 0);
                 }
             }
 
@@ -34,7 +35,7 @@ namespace template
             _surface.DrawPrimitives(_scene.Primitives, _camera.Screen);
         }
 
-        private void TraceRay(VectorMath.Ray ray)
+        private void TraceRay(VectorMath.Ray ray, int reflectionNum)
         {
             //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
             Intersection intersection = _scene.GetClosestIntersection(ray);
@@ -58,7 +59,7 @@ namespace template
                 }*/
                 //calculate the reflected ray and trace this ray too -> recursion
                 Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection));            
+                TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection), ++reflectionNum);            
             }
         }
     }
