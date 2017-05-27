@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using System.Drawing;
 
 namespace template
 {
@@ -7,7 +6,7 @@ namespace template
     {
         private Vector3 _position;
         private bool _isMirror;
-        private Color _color;
+        private float _color;
 
         public Vector3 Position
         {
@@ -22,7 +21,7 @@ namespace template
             set { _isMirror = value; }
         }
 
-        public Primitive(Vector3 position, Color color)
+        public Primitive(Vector3 position, float color = 000000000f)
         {
             _position = position;
             _color = color;
