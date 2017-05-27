@@ -47,11 +47,11 @@ namespace template
                 {
                     if (ray.direction.Y == 0)
                     {
-                        if (_rayCounter % 3 == 0)
+                        if (_rayCounter % 105 == 0)
                         {
                             _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
                         }
-                        _rayCounter++;
+                        if (reflectionNum == 0) _rayCounter++;
                     }
 
                     /*if (!intersection.primitive.IsMirror)
