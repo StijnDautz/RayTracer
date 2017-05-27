@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System.Drawing;
 
 namespace template
 {
@@ -6,6 +7,7 @@ namespace template
     {
         private Vector3 _position;
         private bool _isMirror;
+        private Color _color;
 
         public Vector3 Position
         {
@@ -20,9 +22,10 @@ namespace template
             set { _isMirror = value; }
         }
 
-        public Primitive(Vector3 position)
+        public Primitive(Vector3 position, Color color)
         {
             _position = position;
+            _color = color;
         }
 
         public virtual Intersection GetIntersection(VectorMath.Ray ray)
