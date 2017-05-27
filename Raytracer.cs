@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 using System.Drawing;
 
 namespace template
@@ -35,13 +36,17 @@ namespace template
             _surface.DrawPrimitives(_scene.Primitives, _camera.Screen);
         }
 
+        private Vector3 RayColor(VectorMath.Ray ray, Light light, Vector3 normal, Vector3 primitiveColor)
+        {
+            //Diffuse only
+            float factor = VectorMath.Dot(normal, L);
+        }
         private void TraceRay(VectorMath.Ray ray, int reflectionNum)
         {
             if (reflectionNum < maxReflection)
             {
                 //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
                 Intersection intersection = _scene.GetClosestIntersection(ray);
-
 
                 if (intersection != null)
                 {
@@ -53,7 +58,7 @@ namespace template
                         }
                         if (reflectionNum == 0) _rayCounter++;
                     }
-
+                    
                     /*if (!intersection.primitive.IsMirror)
                     {
                         //cast shadow ray
@@ -68,6 +73,11 @@ namespace template
                     _surface.Line((int)ray.origin.X, (int)ray.origin.Y, (int)(ray.origin.X + ray.direction.X * 10), (int)(ray.origin.Y + ray.direction.Y * 10), 0xff0000);
                 }
             }
+        }
+
+        private int Vector3D(int v1, int v2, int v3)
+        {
+            throw new NotImplementedException();
         }
     }
 }
