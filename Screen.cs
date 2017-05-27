@@ -51,7 +51,7 @@ namespace template
             set { corners[3] = value; }
         }
 
-        public Screen(Vector3 position, Vector3 normal, Point resolution, Point dimensions) : base(position, normal)
+        public Screen(Vector3 position, Vector3 normal, Point resolution, Point dimensions) : base(position, Color.Blue, normal)
         {
             _resolution = resolution;
             _dimensions = new Rectangle((int)(-dimensions.X / 2 + position.X), (int)(dimensions.Y / 2 + position.Z), dimensions.X, dimensions.Y);

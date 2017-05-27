@@ -15,7 +15,7 @@ namespace template {
 	    {
             List<Light> lights = new List<Light>();
             List<Primitive> primitives = new List<Primitive>();
-            primitives.Add(new Sphere(new Vector3(3, 0, 4), 2));
+            primitives.Add(new Sphere(new Vector3(3, 0, 4), Color.Red, 2));
 
             Scene scene = new Scene(lights, primitives);
             Screen scr = new Screen(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8));

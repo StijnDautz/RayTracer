@@ -8,7 +8,7 @@ namespace template
     {
         private int _radius;
 
-        public Sphere(Vector3 position, Color color, float radius) : base(position, color)
+        public Sphere(Vector3 position, Color color, int radius) : base(position, color)
         {
             _radius = radius;
         }
@@ -36,7 +36,8 @@ namespace template
             }
             
 
-            /*//Geometry solution:
+            //Geometry solution:
+            /*
             Vector3 L = Position - ray.origin;
             Vector3 D = ray.direction;
             float tca = VectorMath.Dot(L, D);
