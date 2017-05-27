@@ -40,11 +40,11 @@ namespace template
             Intersection intersection = _scene.GetClosestIntersection(ray);
 
 
-            if (intersection != null)
+            if (intersection != null) //Dynamic Debug Mode
             {
-                if (ray.direction.Y == 0)
+                //if (ray.direction.Y == 0)
                 {
-                    if (_rayCounter % 10 == 0)
+                    //if (_rayCounter % 10 == 0)
                     {
                         _surface.DrawRay(ray, _camera.Screen, intersection.Distance);
                     }
@@ -58,7 +58,7 @@ namespace template
                 }*/
                 //calculate the reflected ray and trace this ray too -> recursion
                 Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                TraceRay(new VectorMath.Ray(intersection.Ray.Position, reflection));            
+                TraceRay(new VectorMath.Ray(ray.origin + ray.direction * intersection.Distance, reflection));            
             }
         }
     }
