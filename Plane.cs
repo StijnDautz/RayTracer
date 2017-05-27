@@ -7,7 +7,7 @@ namespace template
     {
         private Vector3 _normal;
         
-        public Plane(Vector3 position, Vector3 normal, float color = 000000000f) : base(position, color)
+        public Plane(Vector3 position, Vector3 normal, Vector3 color) : base(position, color)
         {
             _normal = normal;
         }

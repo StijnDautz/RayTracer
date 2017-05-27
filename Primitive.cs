@@ -6,12 +6,20 @@ namespace template
     {
         private Vector3 _position;
         private bool _isMirror;
-        private float _color;
+        private Vector3 _color;
 
         public Vector3 Position
         {
             set { _position = value; }
             get { return _position; }
+        }
+
+        public Vector3 Color
+        {
+            get
+            {
+                return _color;
+            }
         }
 
         //TODO add materials and move this property to the material
@@ -21,7 +29,7 @@ namespace template
             set { _isMirror = value; }
         }
 
-        public Primitive(Vector3 position, float color = 000000000f)
+        public Primitive(Vector3 position, Vector3 color)
         {
             _position = position;
             _color = color;

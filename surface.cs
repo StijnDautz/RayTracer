@@ -139,14 +139,14 @@ namespace template
 			}
 		}
         //draw a circle
-        public void Circle(Vector3 center, int radius, Screen screen, int color)
+        public void Circle(Vector3 center, int radius, Screen screen, Vector3 color)
         {
             double boundary = radius * 2 * Math.PI;
             Point pixel;
             for (double i = 0; i < boundary; i+=0.001)
             {
                 pixel = screen.ConvertToScreenCoords(new Vector3(center.X + radius * (float)Math.Cos(i), 0, center.Z + radius * (float)Math.Sin(i)));
-                pixels[pixel.X + pixel.Y * width] = color;
+                pixels[pixel.X + pixel.Y * width] = (int)(color.Z + color.Y * 256 + color.X * 65536);
             }
         }
 
@@ -164,7 +164,7 @@ namespace template
                 if(p is Sphere)
                 {
                     Sphere s = p as Sphere;
-                    Circle(s.Position, s.Radius, screen, 0xff0000);
+                    Circle(s.Position, s.Radius, screen, p.Color);
                 }
             }
         }
