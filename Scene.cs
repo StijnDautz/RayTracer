@@ -1,5 +1,4 @@
-﻿using OpenTK;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace template
 {
@@ -18,6 +17,7 @@ namespace template
         {
             lights.Add(l);
         }
+
         protected void AddPrimitive(Primitive p)
         {
             primitives.Add(p);

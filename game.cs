@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace template {
@@ -6,25 +7,29 @@ namespace template {
     class Game
     {
 	    // member variables
-	    public Surface screen;
+	    public Surface surface;
         private Raytracer _raytracer;
 
 	    // initialize
 	    public void Init()
 	    {
-            Scene scene = new Scene();
-            Screen screen = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512));
-            Camera camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1), screen);
-            _raytracer = new Raytracer(scene, camera);
+            List<Light> lights = new List<Light>();
+            List<Primitive> primitives = new List<Primitive>();
+            primitives.Add(new Sphere(new Vector3(0, 0, 3), 2));
+
+            Scene scene = new Scene(lights, primitives);
+            Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512));
+            Camera camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1), scr);
+            _raytracer = new Raytracer(scene, camera, surface);
         }
 
 	    // tick: renders one frame
 	    public void Tick()
 	    {
-		    screen.Clear( 0 );
+		    surface.Clear( 0 );
             _raytracer.Render();
-		    screen.Print( "hello world", 2, 2, 0xffffff );
-            screen.Line(2, 20, 160, 20, 0xff0000);
+		    surface.Print( "hello world", 2, 2, 0xffffff );
+            surface.Line(2, 20, 160, 20, 0xff0000);
 	    }
     }
 }
