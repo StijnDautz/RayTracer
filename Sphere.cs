@@ -5,20 +5,18 @@ namespace template
 {
     class Sphere : Primitive
     {
-        private float _radius;
+        private int _radius;
 
-        public Sphere(Vector3 position, float radius) : base(position)
+        public Sphere(Vector3 position, int radius) : base(position)
         {
             _radius = radius;
         }
 
-        public float Radius
+        public int Radius
         {
-            get
-            {
-                return _radius;
-            }
+            get { return _radius; }
         }
+
         public override Intersection GetIntersection(VectorMath.Ray ray)
         {
             /*Vector3 centerToOrigin = ray.origin - Position;

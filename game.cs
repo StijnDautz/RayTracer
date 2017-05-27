@@ -15,11 +15,11 @@ namespace template {
 	    {
             List<Light> lights = new List<Light>();
             List<Primitive> primitives = new List<Primitive>();
-            primitives.Add(new Sphere(new Vector3(0, 0, 3), 2));
+            primitives.Add(new Sphere(new Vector3(0, 1, 3), 1));
 
             Scene scene = new Scene(lights, primitives);
-            Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512));
-            Camera camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1), scr);
+            Screen scr = new Screen(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8));
+            Camera camera = new Camera(new Vector3(0, 0, -3), new Vector3(0, 0, 1), scr);
             _raytracer = new Raytracer(scene, camera, surface);
         }
 
@@ -29,7 +29,6 @@ namespace template {
 		    surface.Clear( 0 );
             _raytracer.Render();
 		    surface.Print( "hello world", 2, 2, 0xffffff );
-            surface.Line(2, 20, 160, 20, 0xff0000);
 	    }
     }
 }

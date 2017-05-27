@@ -2,7 +2,9 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
- 
+using OpenTK;
+using System.Collections.Generic;
+
 namespace template
 {
 	public class Sprite
@@ -136,6 +138,37 @@ namespace template
 				pixels[dest + x] = c;
 			}
 		}
+        //draw a circle
+        public void Circle(Vector3 center, int radius, Screen screen, int color)
+        {
+            double boundary = radius * 2 * Math.PI;
+            Point pixel;
+            for (double i = 0; i < boundary; i+=0.001)
+            {
+                pixel = screen.ConvertToScreenCoords(new Vector3(center.X + radius * (float)Math.Cos(i), 0, center.Y + radius * (float)Math.Sin(i)));
+                pixels[pixel.X + pixel.Y * width] = color;
+            }
+        }
+
+        public void DrawRay(VectorMath.Ray ray, Screen screen)
+        {
+            Point p1 = screen.ConvertToScreenCoords(ray.origin);
+            Point p2 = screen.ConvertToScreenCoords(ray.Position);
+            Line(p1.X, p1.Y, p2.X, p2.Y, 0xff0000);
+        }
+
+        public void DrawPrimitives(List<Primitive> primivites, Screen screen)
+        {
+            foreach (Primitive p in primivites)
+            {
+                if(p is Sphere)
+                {
+                    Sphere s = p as Sphere;
+                    Circle(s.Position, s.Radius, screen, 0xff0000);
+                }
+            }
+        }
+
         // helper function for line clipping
         int OUTCODE( int x, int y) 
         {

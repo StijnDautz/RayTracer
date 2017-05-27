@@ -4,13 +4,18 @@ namespace template
 {
     class Scene
     {
-        public List<Light> lights;
-        public List<Primitive> primitives;
+        private List<Light> lights;
+        private List<Primitive> _primitives;
+
+        public List<Primitive> Primitives
+        {
+            get { return _primitives; }
+        }
 
         public Scene(List<Light> lights, List<Primitive> primitives)
         {
             this.lights = lights;
-            this.primitives = primitives;
+            _primitives = primitives;
         }
 
         protected void AddLight(Light l)
@@ -20,7 +25,7 @@ namespace template
 
         protected void AddPrimitive(Primitive p)
         {
-            primitives.Add(p);
+            _primitives.Add(p);
         }
 
         public Intersection GetClosestIntersection(VectorMath.Ray ray)
@@ -28,7 +33,7 @@ namespace template
             float minD = float.MaxValue;
             Intersection intersection = null;
             Intersection closest = null;
-            foreach (Primitive p in primitives)
+            foreach (Primitive p in _primitives)
             {
                 intersection = p.GetIntersection(ray);
                 if(intersection != null && intersection.Ray.magnitude < minD)
