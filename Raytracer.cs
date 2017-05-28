@@ -27,7 +27,7 @@ namespace template
                 {
                     //TODO how to assign a color to a pixel, cast shadow ray function returns color and alle colors for one pixel are added to one color?
                     //TODO re add magnitude variable to constructer to preven direction vector * 10
-                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position) * 10), 0));  
+                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position) * 10), 0));
                 }
             }
 
@@ -54,8 +54,8 @@ namespace template
                 {
                     if (_rayCounter % 105 == 0)
                     {
-                        if (intersection == null) _surface.DrawRay(ray, _camera.Screen, ray.magnitude, new Vector3(1f,0f,0f));
-                        else _surface.DrawRay(ray, _camera.Screen, intersection.Distance, new Vector3(1f,0f,0f) );
+                        if (intersection == null) _surface.DrawRay(ray, _camera.Screen, ray.magnitude, new Vector3(1f, 0f, 0f));
+                        else _surface.DrawRay(ray, _camera.Screen, intersection.Distance, new Vector3(1f, 0f, 0f));
                     }
                     if (reflectionNum == 0) _rayCounter++;
                 }
@@ -71,20 +71,28 @@ namespace template
                         //cast shadow ray
                         //TODO create cast shadow ray function that returns a color?
                     }*/
-                    
+
                     //If reflective:
                     //calculate the reflected ray and trace this ray too -> recursion
                     //Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
                     //TraceRay(new VectorMath.Ray(ray.origin + ray.direction * intersection.Distance, reflection), ++reflectionNum);
-                    
+
                     //If glass:
                     if (intersection.primitive.IsGlass)
                     {
-                        //return TraceRay(new VectorMath.Ray(intersection.Distance * ray.direction + ray.origin, ;
+                        
                     }
-
+                    Vector3 finalColor = Vector3.Zero;
+                    foreach (Light l in _scene.Lights)
+                    {
+                        Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
+                        finalColor.X += intersection.primitive.Color.X * alpha.X;
+                        finalColor.Y += intersection.primitive.Color.Y * alpha.Y;
+                        finalColor.Z += intersection.primitive.Color.Z * alpha.Z;
+                    }
                     //Console.WriteLine(VectorMath.Dot(_scene.Lights[0].Position - ray.origin + ray.direction * intersection.Distance, intersection.Normal));
-                    return intersection.primitive.Color * DirectIllumination(intersection.IntersectionPoint, intersection.Normal, _scene.Lights[0]);  //Kek kleurtje als hij wél iets raakt
+                    return finalColor;//intersection.primitive.Color * DirectIllumination(intersection.IntersectionPoint, intersection.Normal, _scene.Lights[0]);
+
                     //cast shadowRays
                     //TODO call _screen.CastShadowRays
                 }

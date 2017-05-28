@@ -20,9 +20,15 @@ namespace template {
             _random = new Random();
             primitives.Add(new Sphere(new Vector3(2, 0, 4), 1, new Vector3(1.0f, 0.5f, 0.5f)));
             primitives.Add(new Sphere(new Vector3(4, 0, 3), 1, new Vector3(0.5f, 1.0f, 0.5f)));
-            primitives.Add(new Sphere(new Vector3(-2, 0, 2), 1, new Vector3(0.5f, 0.5f, 1.0f)));
+            primitives.Add(new Sphere(new Vector3(-1, 0, 3), 1, new Vector3(0.5f, 0.5f, 1.0f)));
             primitives.Add(new Plane(new Vector3(0, -2, 0), new Vector3(0, 1, 0), new Vector3(1f, 1f, 1f)));
-            lights.Add(new Light(new Vector3(1, 0, 1), new Vector3(1, 1, 1), new Vector3(2.5f,2.5f,2.5f)));
+            primitives.Add(new Plane(new Vector3(0, 4, 0), new Vector3(0, -1, 0), new Vector3(1f, 1f, 1f)));
+            primitives.Add(new Plane(new Vector3(-5, 0, 0), new Vector3(1, 0, 0), new Vector3(1f, 1f, 1f)));
+            primitives.Add(new Plane(new Vector3(5, 0, 0), new Vector3(-1, 0, 0), new Vector3(1f, 1f, 1f)));
+            primitives.Add(new Plane(new Vector3(0, 0, 4.5f), new Vector3(0, 0, -1), new Vector3(1f, 1f, 1f)));
+
+            lights.Add(new Light(new Vector3(4, 0, 1), new Vector3(1f, 1f, 1f), new Vector3(1.5f,1.5f,1.5f)));
+            lights.Add(new Light(new Vector3(-3, 0, 1), new Vector3(1f, 1f, 1f), new Vector3(1.5f, 1.5f, 1.5f)));
 
             Scene scene = new Scene(lights, primitives);
             Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8));
