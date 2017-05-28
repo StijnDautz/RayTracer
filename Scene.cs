@@ -53,23 +53,25 @@ namespace template
             return closest;
         }
 
-        public float CastShadowRays(Vector3 intersection)
+        public bool IsInShadow(Vector3 intersection, Vector3 normal, Light light)
         {
-            Vector3 dir;
-            float lightAttenuation = 0;
-            foreach(Light l in _lights)
+            Vector3 dir = light.Position - intersection;
+            //if the dot product is smaller then one, then the light source is behind the primitive itself and so we immediately return true,
+            //to prevent looping through all primitives in the scene
+            if (VectorMath.Dot(dir, normal) < 0)
             {
-                foreach(Primitive p in _primitives)
+                return true;
+            }
+            foreach (Primitive p in _primitives)
+            {
+                //if there is no intersection or the intersecting primitive is behind the light source, increase the lightAttenuation
+                if (intersection != null && dir.Length < GetClosestIntersection(new VectorMath.Ray(intersection, dir)).Distance)
                 {
-                    dir = l.Position - intersection;
-                    //if there is no intersection or the intersecting primitive is behind the light source, increase the lightAttenuation
-                    if(intersection == null || dir.Length < GetClosestIntersection(new VectorMath.Ray(intersection, dir)).Distance)
-                    {
-                        lightAttenuation += 1 / (dir.Length * dir.Length);
-                    }
+                    return true;
                 }
             }
-            return lightAttenuation;
+            //if no object was between the light and the intersection, then the intersection point isn't in a shadow and so we return false
+            return false;
         }
     }
 }
