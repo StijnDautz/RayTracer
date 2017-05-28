@@ -52,10 +52,18 @@ namespace template
 
                 if (ray.direction.Y == 0)
                 {
-                    if (_rayCounter % 105 == 0)
+                    //if (_rayCounter % 105 == 0)
                     {
                         if (intersection == null) _surface.DrawRay(ray, _camera.Screen, ray.magnitude, new Vector3(1f, 0f, 0f));
-                        else _surface.DrawRay(ray, _camera.Screen, intersection.Distance, new Vector3(1f, 0f, 0f));
+                        else
+                        {
+                            _surface.DrawRay(ray, _camera.Screen, intersection.Distance, new Vector3(1f, 0f, 0f)); //Draw ray
+                            foreach (Light l in _scene.Lights)
+                            {
+                                if(_scene.IsInShadow(intersection, l)) _surface.DrawRay(new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint), _camera.Screen, (l.Position - intersection.IntersectionPoint).Length, new Vector3(0f, 0f, 1f));
+                                else _surface.DrawRay(new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint), _camera.Screen, (l.Position - intersection.IntersectionPoint).Length, new Vector3(1f , 1f, 0f));
+                            }
+                        }
                     }
                     if (reflectionNum == 0) _rayCounter++;
                 }
@@ -65,7 +73,7 @@ namespace template
                     return Vector3.Zero; //Zwerte kleur als hij niks raakt
                 }
                 else
-                {
+
                     /*if (!intersection.primitive.IsMirror)
                     {
                         //cast shadow ray
@@ -79,27 +87,25 @@ namespace template
 
                     //If glass:
                     if (intersection.primitive.IsGlass)
-                    {
-                        
-                    }
-                    Vector3 finalColor = Vector3.Zero;
-                    foreach (Light l in _scene.Lights)
-                    {
-                        if(!_scene.IsInShadow(intersection.IntersectionPoint, intersection.Normal, l))
-                        {
-                            Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
-                            finalColor.X += intersection.primitive.Color.X * alpha.X;
-                            finalColor.Y += intersection.primitive.Color.Y * alpha.Y;
-                            finalColor.Z += intersection.primitive.Color.Z * alpha.Z;
-                        }
-                    }
-                    //Console.WriteLine(VectorMath.Dot(_scene.Lights[0].Position - ray.origin + ray.direction * intersection.Distance, intersection.Normal));
-                    return finalColor;//intersection.primitive.Color * DirectIllumination(intersection.IntersectionPoint, intersection.Normal, _scene.Lights[0]);
+                {
 
-                    //cast shadowRays
-                    //TODO call _screen.CastShadowRays
                 }
+                Vector3 finalColor = intersection.primitive.Color * 0;// .1f;
+                foreach (Light l in _scene.Lights)
+                {
+                    if (!_scene.IsInShadow(intersection, l))
+                    {
+                        Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
+                        finalColor.X += intersection.primitive.Color.X * alpha.X;
+                        finalColor.Y += intersection.primitive.Color.Y * alpha.Y;
+                        finalColor.Z += intersection.primitive.Color.Z * alpha.Z;
+                    }
+                }
+                return finalColor;
+                //cast shadowRays
+                //TODO call _screen.CastShadowRays
             }
+
             return Vector3.Zero;
         }
 

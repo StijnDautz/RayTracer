@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 
 namespace template
@@ -53,22 +54,21 @@ namespace template
             return closest;
         }
 
-        public bool IsInShadow(Vector3 intersectionPoint, Vector3 normal, Light light)
+        public bool IsInShadow(Intersection intersection, Light light)
         {
-            Vector3 dir = light.Position - intersectionPoint;
+            Vector3 dir = Vector3.Normalize(light.Position - intersection.IntersectionPoint);
             //if the dot product is smaller then one, then the light source is behind the primitive itself and so we immediately return true,
             //to prevent looping through all primitives in the scene
-            if (VectorMath.Dot(dir, normal) < 0)
+            if (VectorMath.Dot(dir, intersection.Normal) < 0)
+            {
+               return true;
+            }
+
+            //if there is no intersection or the intersecting primitive is behind the light source, increase the lightAttenuation
+            Intersection i = GetClosestIntersection(new VectorMath.Ray(intersection.IntersectionPoint + dir * 0.001f, dir));
+            if (i != null && dir.Length > i.Distance)
             {
                 return true;
-            }
-            foreach (Primitive p in _primitives)
-            {
-                //if there is no intersection or the intersecting primitive is behind the light source, increase the lightAttenuation
-                if (intersectionPoint != null && dir.Length > GetClosestIntersection(new VectorMath.Ray(intersectionPoint + dir * 0.005f, dir)).Distance)
-                {
-                    return true;
-                }
             }
             //if no object was between the light and the intersection, then the intersection point isn't in a shadow and so we return false
             return false;
