@@ -52,10 +52,18 @@ namespace template
 
                 if (ray.direction.Y == 0)
                 {
-                    if (_rayCounter % 105 == 0)
+                    //if (_rayCounter % 105 == 0)
                     {
                         if (intersection == null) _surface.DrawRay(ray, _camera.Screen, ray.magnitude, new Vector3(1f, 0f, 0f));
-                        else _surface.DrawRay(ray, _camera.Screen, intersection.Distance, new Vector3(1f, 0f, 0f));
+                        else
+                        {
+                            _surface.DrawRay(ray, _camera.Screen, intersection.Distance, new Vector3(1f, 0f, 0f)); //Draw ray
+                            foreach (Light l in _scene.Lights)
+                            {
+                                if(_scene.IsInShadow(intersection, l)) _surface.DrawRay(new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint), _camera.Screen, (l.Position - intersection.IntersectionPoint).Length, new Vector3(0f, 0f, 1f));
+                                else _surface.DrawRay(new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint), _camera.Screen, (l.Position - intersection.IntersectionPoint).Length, new Vector3(1f , 1f, 0f));
+                            }
+                        }
                     }
                     if (reflectionNum == 0) _rayCounter++;
                 }
