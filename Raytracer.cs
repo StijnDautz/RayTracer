@@ -58,7 +58,8 @@ namespace template
                         }
                         if (reflectionNum == 0) _rayCounter++;
                     }
-                    
+
+
                     /*if (!intersection.primitive.IsMirror)
                     {
                         //cast shadow ray
@@ -67,6 +68,9 @@ namespace template
                     //calculate the reflected ray and trace this ray too -> recursion
                     Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
                     TraceRay(new VectorMath.Ray(ray.origin + ray.direction * intersection.Distance, reflection), ++reflectionNum);
+
+                    //cast shadowRays
+                    //TODO call _screen.CastShadowRays
                 }
                 else if (reflectionNum > 0)
                 {

@@ -2,25 +2,9 @@
 
 namespace template
 {
-    public abstract class Primitive
+    public abstract class Primitive : Object
     {
-        private Vector3 _position;
         private bool _isMirror;
-        private Vector3 _color;
-
-        public Vector3 Position
-        {
-            set { _position = value; }
-            get { return _position; }
-        }
-
-        public Vector3 Color
-        {
-            get
-            {
-                return _color;
-            }
-        }
 
         //TODO add materials and move this property to the material
         public bool IsMirror
@@ -29,10 +13,9 @@ namespace template
             set { _isMirror = value; }
         }
 
-        public Primitive(Vector3 position, Vector3 color)
+        public Primitive(Vector3 position, Vector3 color) : base(position, color)
         {
-            _position = position;
-            _color = color;
+
         }
 
         public virtual Intersection GetIntersection(VectorMath.Ray ray)
