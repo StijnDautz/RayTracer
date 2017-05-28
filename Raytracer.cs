@@ -36,10 +36,26 @@ namespace template
             _surface.DrawPrimitives(_scene.Primitives, _camera.Screen);
         }
 
-        private Vector3 RayColor(VectorMath.Ray ray, Light light, Vector3 normal, Vector3 primitiveColor)
+        private Vector3 RayColor(VectorMath.Ray ray, Vector3 intersectionPoint, Light light, Vector3 normal, Primitive primitive)
         {
-            //Diffuse only
-            float factor = VectorMath.Dot(normal, L);
+            if (primitive.IsMirror)
+            {
+                
+            }
+
+
+
+
+            return DirectIllumination(intersectionPoint, normal, light) * primitive.Color;
+        }
+
+        private Vector3 DirectIllumination(Vector3 I, Vector3 N, Light light)
+        {
+            Vector3 L = light.Position - I;
+            float dist = L.Length;
+            L *= (1.0f / dist);
+            float attenuation = 1 / (dist * dist);
+            return light.Color * VectorMath.Dot(N, L) * attenuation;
         }
         private void TraceRay(VectorMath.Ray ray, int reflectionNum)
         {
@@ -77,6 +93,7 @@ namespace template
                     _surface.Line((int)ray.origin.X, (int)ray.origin.Y, (int)(ray.origin.X + ray.direction.X * 10), (int)(ray.origin.Y + ray.direction.Y * 10), 0xff0000);
                 }
             }
+
         }
 
         private int Vector3D(int v1, int v2, int v3)
