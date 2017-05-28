@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -9,15 +10,19 @@ namespace template {
 	    // member variables
 	    public Surface surface;
         private Raytracer _raytracer;
+        private Random _random;
 
 	    // initialize
 	    public void Init()
 	    {
             List<Light> lights = new List<Light>();
             List<Primitive> primitives = new List<Primitive>();
-            primitives.Add(new Sphere(new Vector3(0, 0, 4), 1, new Vector3(255, 0, 0)));
-            primitives.Add(new Sphere(new Vector3(3, 0, 3), 1, new Vector3(0, 255, 0)));
-            primitives.Add(new Sphere(new Vector3(-1, 0, 2), 1, new Vector3(0, 0, 255)));
+            _random = new Random();
+            primitives.Add(new Sphere(new Vector3(2, 0, 4), 1, new Vector3(1.0f, 0.5f, 0.5f)));
+            primitives.Add(new Sphere(new Vector3(4, 0, 3), 1, new Vector3(0.5f, 1.0f, 0.5f)));
+            primitives.Add(new Sphere(new Vector3(-2, 0, 2), 1, new Vector3(0.5f, 0.5f, 1.0f)));
+            primitives.Add(new Plane(new Vector3(0, -2, 0), new Vector3(0, 1, 0), new Vector3(1f, 1f, 1f)));
+            lights.Add(new Light(new Vector3(1, 0, 1), new Vector3(1, 1, 1), new Vector3(2.5f,2.5f,2.5f)));
 
             Scene scene = new Scene(lights, primitives);
             Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8));

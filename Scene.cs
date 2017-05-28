@@ -13,6 +13,12 @@ namespace template
             get { return _primitives; }
         }
 
+        public List<Light> Lights
+        {
+            get { return _lights; }
+        }
+
+
         public Scene(List<Light> lights, List<Primitive> primitives)
         {
             _lights = lights;

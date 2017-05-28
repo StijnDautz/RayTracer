@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 
 namespace template
 {
@@ -31,6 +32,13 @@ namespace template
         public static Vector3 Reflect(Vector3 incoming, Vector3 normal)
         {
             return incoming - normal * (2 * Dot(incoming, normal));
+        }
+
+        public static int GetColorInt(Vector3 color)
+        {
+            color = Vector3.Clamp(color, Vector3.Zero, new Vector3(1,1,1));
+            color *= 255;
+            return ((int)color.Z << 0) | ((int)color.Y << 8) | ((int)color.X << 16);
         }
     }
 }

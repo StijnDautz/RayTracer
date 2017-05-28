@@ -70,7 +70,7 @@ namespace template
         //TODO make world dimension variable
         public Point ConvertToScreenCoords(Vector3 v)
         {
-            int x = (int)((_dimensions.Right + v.X) * (_resolution.X / 10)) + 512;
+            int x = (int)((_dimensions.Right + v.X) * (_resolution.X / 10));
             int y = (int)((_dimensions.Top - v.Z) * (_resolution.Y / 10));
             return new Point(x, y);
         }

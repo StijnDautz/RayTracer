@@ -6,6 +6,7 @@ namespace template
     {
         private Primitive _primitive;
         private Vector3 _normal;
+        private Vector3 _intersectionPoint;
         private VectorMath.Ray _ray;
         private float _distance;
 
@@ -17,6 +18,10 @@ namespace template
             }
         }
 
+        public Vector3 IntersectionPoint
+        {
+            get { return _intersectionPoint; }
+        }
         public Primitive primitive
         {
             get { return _primitive; }
@@ -32,9 +37,10 @@ namespace template
             get { return _ray; }
         }
 
-        public Intersection(Primitive primitive, Vector3 normal, VectorMath.Ray ray, float distance)
+        public Intersection(Primitive primitive, Vector3 intersectionPoint, Vector3 normal, VectorMath.Ray ray, float distance)
         {
             _primitive = primitive;
+            _intersectionPoint = intersectionPoint;
             _normal = normal;
             _ray = ray;
             _distance = distance;
