@@ -53,9 +53,9 @@ namespace template
             return closest;
         }
 
-        public bool IsInShadow(Vector3 intersection, Vector3 normal, Light light)
+        public bool IsInShadow(Vector3 intersectionPoint, Vector3 normal, Light light)
         {
-            Vector3 dir = light.Position - intersection;
+            Vector3 dir = light.Position - intersectionPoint;
             //if the dot product is smaller then one, then the light source is behind the primitive itself and so we immediately return true,
             //to prevent looping through all primitives in the scene
             if (VectorMath.Dot(dir, normal) < 0)
