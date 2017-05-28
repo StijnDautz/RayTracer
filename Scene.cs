@@ -62,13 +62,11 @@ namespace template
             {
                 return true;
             }
-            foreach (Primitive p in _primitives)
+            //if there is no intersection or the intersecting primitive is behind the light source, increase the lightAttenuation
+            Intersection i = GetClosestIntersection(new VectorMath.Ray(intersection + dir * 0.1f, dir));
+            if (i != null && dir.Length > i.Distance)
             {
-                //if there is no intersection or the intersecting primitive is behind the light source, increase the lightAttenuation
-                if (intersection != null && dir.Length < GetClosestIntersection(new VectorMath.Ray(intersection, dir)).Distance)
-                {
-                    return true;
-                }
+                return true;
             }
             //if no object was between the light and the intersection, then the intersection point isn't in a shadow and so we return false
             return false;
