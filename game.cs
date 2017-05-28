@@ -27,8 +27,8 @@ namespace template {
             primitives.Add(new Plane(new Vector3(5, 0, 0), new Vector3(-1, 0, 0), new Vector3(1f, 1f, 1f)));
             primitives.Add(new Plane(new Vector3(0, 0, 4.5f), new Vector3(0, 0, -1), new Vector3(1f, 1f, 1f)));
 
-            lights.Add(new Light(new Vector3(4, 0, 1), new Vector3(1f, 1f, 1f), new Vector3(1.5f,1.5f,1.5f)));
-            lights.Add(new Light(new Vector3(-3, 0, 1), new Vector3(1f, 1f, 1f), new Vector3(1.5f, 1.5f, 1.5f)));
+            lights.Add(new Light(new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f), new Vector3(4f,4f,4f)));
+            //lights.Add(new Light(new Vector3(-3, 0, 1), new Vector3(1f, 1f, 1f), new Vector3(1.5f, 1.5f, 1.5f)));
 
             Scene scene = new Scene(lights, primitives);
             Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8));

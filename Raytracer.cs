@@ -85,10 +85,13 @@ namespace template
                     Vector3 finalColor = Vector3.Zero;
                     foreach (Light l in _scene.Lights)
                     {
-                        Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
-                        finalColor.X += intersection.primitive.Color.X * alpha.X;
-                        finalColor.Y += intersection.primitive.Color.Y * alpha.Y;
-                        finalColor.Z += intersection.primitive.Color.Z * alpha.Z;
+                        if(!_scene.IsInShadow(intersection.IntersectionPoint, intersection.Normal, l))
+                        {
+                            Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
+                            finalColor.X += intersection.primitive.Color.X * alpha.X;
+                            finalColor.Y += intersection.primitive.Color.Y * alpha.Y;
+                            finalColor.Z += intersection.primitive.Color.Z * alpha.Z;
+                        }
                     }
                     //Console.WriteLine(VectorMath.Dot(_scene.Lights[0].Position - ray.origin + ray.direction * intersection.Distance, intersection.Normal));
                     return finalColor;//intersection.primitive.Color * DirectIllumination(intersection.IntersectionPoint, intersection.Normal, _scene.Lights[0]);

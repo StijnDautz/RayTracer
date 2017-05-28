@@ -53,9 +53,9 @@ namespace template
             return closest;
         }
 
-        public bool IsInShadow(Vector3 intersection, Vector3 normal, Light light)
+        public bool IsInShadow(Vector3 intersectionPoint, Vector3 normal, Light light)
         {
-            Vector3 dir = light.Position - intersection;
+            Vector3 dir = light.Position - intersectionPoint;
             //if the dot product is smaller then one, then the light source is behind the primitive itself and so we immediately return true,
             //to prevent looping through all primitives in the scene
             if (VectorMath.Dot(dir, normal) < 0)
@@ -65,7 +65,7 @@ namespace template
             foreach (Primitive p in _primitives)
             {
                 //if there is no intersection or the intersecting primitive is behind the light source, increase the lightAttenuation
-                if (intersection != null && dir.Length < GetClosestIntersection(new VectorMath.Ray(intersection, dir)).Distance)
+                if (intersectionPoint != null && dir.Length > GetClosestIntersection(new VectorMath.Ray(intersectionPoint + dir * 0.005f, dir)).Distance)
                 {
                     return true;
                 }
