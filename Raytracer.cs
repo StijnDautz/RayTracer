@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using System;
 using System.Drawing;
 
 namespace template
@@ -9,8 +8,8 @@ namespace template
         private Scene _scene;
         private Camera _camera;
         private Surface _surface;
-        private int _rayCounter = 0; //So that not EVERY debug ray gets drawn
-        private int maxReflection = 2;
+        private int _rayCount = 0; //So that not EVERY debug ray gets drawn
+        private int maxReflection = 8;
 
         public Raytracer(Scene scene, Camera camera, Surface surface)
         {
@@ -27,7 +26,7 @@ namespace template
                 {
                     //TODO how to assign a color to a pixel, cast shadow ray function returns color and alle colors for one pixel are added to one color?
                     //TODO re add magnitude variable to constructer to preven direction vector * 10
-                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position) * 10), 0));
+                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
                 }
             }
 
@@ -35,85 +34,89 @@ namespace template
             _surface.DrawPrimitives(_scene.Primitives, _scene.Lights, _camera.Screen);
         }
 
+        private Vector3 TraceRay(VectorMath.Ray ray, int reflectionNum)
+        {
+            Vector3 color = Vector3.Zero;
+
+            //if this ray isn't recursively called more than maxReflection times trace this ray, 
+            //else increase rayCount, as the reflections have all been drawn and a new primary ray is going to be shot, instead of a reflective ray
+            if (reflectionNum < maxReflection)
+            {
+                //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
+                Intersection intersection = _scene.GetClosestIntersection(ray);
+
+                DrawDebugRays(intersection, ray, _rayCount);
+
+                //if there was an intersection, compute the color to return
+                if (intersection != null)
+                {
+                    foreach (Light l in _scene.Lights)
+                    {
+                        if (!_scene.IsInShadow(intersection, l))
+                        {
+                            Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
+                            color.X += intersection.primitive.Color.X * alpha.X;
+                            color.Y += intersection.primitive.Color.Y * alpha.Y;
+                            color.Z += intersection.primitive.Color.Z * alpha.Z;
+                        }
+                    }
+
+                    //increase reflectionNum, so we do not get stuck in an infinite recursive loop
+                    reflectionNum++;
+
+                    //trace the reflective ray
+                    Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
+                    TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum);
+                }
+            }
+            else { _rayCount++; }
+            return color;
+        }
+
+        /*
+         * DEBUG
+         */
+
+        private void DrawDebugRays(Intersection intersection, VectorMath.Ray ray, int rayCount)
+        {
+            if (intersection != null && intersection.IntersectionPoint.Y == 0)
+            {
+                DrawTracedRay(intersection, ray);
+                if (intersection != null)
+                { DrawShadowRays(intersection); }
+            }
+        }
+
+        private void DrawTracedRay(Intersection intersection, VectorMath.Ray ray)
+        {
+            float drawLength = intersection == null ? ray.magnitude : intersection.Distance;
+            _surface.DrawRay(ray, _camera.Screen, drawLength, new Vector3(1, 0, 0));
+        }
+
+        private void DrawShadowRays(Intersection intersection)
+        {
+            VectorMath.Ray shadowRay;
+            Vector3 color;
+                foreach (Light l in _scene.Lights)
+                {
+                    bool inShadow = _scene.IsInShadow(intersection, l);
+                    color = inShadow ? new Vector3(1, 1, 1) : new Vector3(0, 1, 1);
+                    shadowRay = new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint);
+                    _surface.DrawRay(shadowRay, _camera.Screen, shadowRay.magnitude, color);
+                }
+        }
+
+        /*
+         * LIGHTNING
+         */
+
         private Vector3 DirectIllumination(Vector3 intersectionPoint, Vector3 normal, Light light)
         {
             Vector3 L = light.Position - intersectionPoint;
             float dist = L.Length;
             L *= (1.0f / dist);
             float attenuation = 1 / (dist * dist);
-            return light.Color * VectorMath.Dot(normal, L) * attenuation * light.Intensity;
-        }
-        private Vector3 TraceRay(VectorMath.Ray ray, int reflectionNum)
-        {
-            if (reflectionNum < maxReflection)
-            {
-                //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
-                Intersection intersection = _scene.GetClosestIntersection(ray);
-
-                if (ray.direction.Y == 0)
-                {
-                    //if (_rayCounter % 105 == 0)
-                    {
-                        if (intersection == null) _surface.DrawRay(ray, _camera.Screen, ray.magnitude, new Vector3(1f, 0f, 0f));
-                        else
-                        {
-                            _surface.DrawRay(ray, _camera.Screen, intersection.Distance, new Vector3(1f, 0f, 0f)); //Draw ray
-                            foreach (Light l in _scene.Lights)
-                            {
-                                if(_scene.IsInShadow(intersection, l)) _surface.DrawRay(new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint), _camera.Screen, (l.Position - intersection.IntersectionPoint).Length, new Vector3(0f, 0f, 1f));
-                                else _surface.DrawRay(new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint), _camera.Screen, (l.Position - intersection.IntersectionPoint).Length, new Vector3(1f , 1f, 0f));
-                            }
-                        }
-                    }
-                    if (reflectionNum == 0) _rayCounter++;
-                }
-
-                if (intersection == null)
-                {
-                    return Vector3.Zero; //Zwerte kleur als hij niks raakt
-                }
-                else
-                {
-                    /*if (!intersection.primitive.IsMirror)
-                    {
-                        //cast shadow ray
-                        //TODO create cast shadow ray function that returns a color?
-                    }*/
-
-                    //If reflective:
-                    //calculate the reflected ray and trace this ray too -> recursion
-                    //Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                    //TraceRay(new VectorMath.Ray(ray.origin + ray.direction * intersection.Distance, reflection), ++reflectionNum);
-
-                    //If glass:
-                    if (intersection.primitive.IsGlass)
-                    {
-                        
-                    }
-                    Vector3 finalColor = Vector3.Zero;
-                    foreach (Light l in _scene.Lights)
-                    {
-                        if(!_scene.IsInShadow(intersection, l))
-                        {
-                            Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
-                            finalColor.X += intersection.primitive.Color.X * alpha.X;
-                            finalColor.Y += intersection.primitive.Color.Y * alpha.Y;
-                            finalColor.Z += intersection.primitive.Color.Z * alpha.Z;
-                        }
-                    }
-                    //Console.WriteLine(VectorMath.Dot(_scene.Lights[0].Position - ray.origin + ray.direction * intersection.Distance, intersection.Normal));
-                    return finalColor;//intersection.primitive.Color * DirectIllumination(intersection.IntersectionPoint, intersection.Normal, _scene.Lights[0]);
-
-                    //cast shadowRays
-                    //TODO call _screen.CastShadowRays
-                }
-            }
-            return Vector3.Zero;
-        }
-
-        private int Vector3D(int v1, int v2, int v3)
-        {
-            throw new NotImplementedException();
+            return light.Color * Vector3.Dot(normal, L) * attenuation * light.Intensity;
         }
     }
 }

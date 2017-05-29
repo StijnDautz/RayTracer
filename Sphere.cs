@@ -1,6 +1,5 @@
 ﻿using OpenTK;
 using System;
-using System.Drawing;
 
 namespace template
 {
@@ -19,21 +18,24 @@ namespace template
         }
 
         public override Intersection GetIntersection(VectorMath.Ray ray)
-        {
+        {          
             Vector3 centerToOrigin = ray.origin - Position;
-            float a = VectorMath.Dot(ray.direction, ray.direction);
-            float b = VectorMath.Dot(2 * ray.direction, centerToOrigin);
-            float c = VectorMath.Dot(centerToOrigin, centerToOrigin) - _radius * _radius;
+            float b = 2 * Vector3.Dot(ray.direction, centerToOrigin);
 
-            float d = b * b - 4 * a * c;
+            //a is always one (dotproduct with itself)
+            float d = b * b - 4 * (centerToOrigin.Length * centerToOrigin.Length - _radius * _radius);
             if (d < 0)
             { return null; }
             else
             {
-                Vector3 intersectionPoint = ray.origin + ray.direction * (float)((-b - Math.Sqrt(d)) / (2 * a));
-                Vector3 normal = Vector3.Normalize(intersectionPoint - Position);
-                return new Intersection(this, intersectionPoint, normal, ray, (intersectionPoint - ray.origin).Length);
-            }
+                d = (float)Math.Sqrt(d);
+                float t0 = -b - d;
+                float t1 = -b + d;
+                t0 = t0 < t1 ? t0 : t1;
+
+                Vector3 intersectionPoint = ray.origin + ray.direction * 0.5f * t0;
+                return new Intersection(this, intersectionPoint, Vector3.Normalize(intersectionPoint - Position), ray, (intersectionPoint - ray.origin).Length);
+            }     
         }
     }
 }

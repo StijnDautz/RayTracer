@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using System;
 using System.Collections.Generic;
 
 namespace template
@@ -19,19 +18,18 @@ namespace template
             get { return _lights; }
         }
 
-
-        public Scene(List<Light> lights, List<Primitive> primitives)
+        public Scene()
         {
-            _lights = lights;
-            _primitives = primitives;
+            _lights = new List<Light>();
+            _primitives = new List<Primitive>();
         }
 
-        protected void AddLight(Light l)
+        public void AddLight(Light l)
         {
             _lights.Add(l);
         }
 
-        protected void AddPrimitive(Primitive p)
+        public void AddPrimitive(Primitive p)
         {
             _primitives.Add(p);
         }
@@ -49,7 +47,6 @@ namespace template
                     minD = intersection.Distance;
                     closest = intersection;
                 }
-                intersection = null;
             }
             return closest;
         }
@@ -59,7 +56,7 @@ namespace template
             Vector3 dir = Vector3.Normalize(light.Position - intersection.IntersectionPoint);
             //if the dot product is smaller then one, then the light source is behind the primitive itself and so we immediately return true,
             //to prevent looping through all primitives in the scene
-            if (VectorMath.Dot(dir, intersection.Normal) < 0)
+            if (Vector3.Dot(dir, intersection.Normal) < 0)
             {
                return true;
             }
