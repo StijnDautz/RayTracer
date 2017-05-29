@@ -17,15 +17,7 @@ namespace template
             get { return _material.IsReflective; }
         }
 
-        public float RefractionIndex
-        {
-            get { return _refractionIndex; }
-            set { _refractionIndex = value; }
-        }
-
-
-
-        public Primitive(Vector3 position, Vector3 color, Material material) : base(position)
+        public Primitive(Vector3 position, Material material) : base(position)
         {
             _material = material;
         }

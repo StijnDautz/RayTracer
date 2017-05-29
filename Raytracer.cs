@@ -23,8 +23,8 @@ namespace template
             for (int x = 0; x < 512; x++) //instead of 0 -> resolution.X
             {
                 for (int y = 0; y < 512; y++)
-                { 
-                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
+                {
+                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position + _camera.Offset, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
                 }
             }
 
@@ -55,9 +55,20 @@ namespace template
                     reflectionNum++;
 
                     //trace the reflective ray
-                    Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                    if (intersection.primitive.IsReflective)
-                    { color += TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum); }
+
+                    if (intersection.primitive.Material.IsReflective)
+                    {
+                        Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
+                        color += TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum);
+                    }
+                    if (intersection.primitive.Material.IsGlass)
+                    {
+                        Vector3 refraction = VectorMath.Refract(ray, intersection.Normal, intersection.primitive.Material.RefractionIndex);
+                        if (ray.inSphere) ray.inSphere = false;
+                        else ray.inSphere = true;
+                        color = TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, refraction), ++reflectionNum);
+                    }
+
                 }
             }
             else { _rayCount++; }
@@ -88,13 +99,13 @@ namespace template
         {
             VectorMath.Ray shadowRay;
             Vector3 color;
-                foreach (Light l in _scene.Lights)
-                {
-                    bool inShadow = _scene.IsInShadow(intersection, l);
-                    color = inShadow ? new Vector3(1, 1, 1) : new Vector3(0, 1, 1);
-                    shadowRay = new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint);
-                    _surface.DrawRay(shadowRay, _camera.Screen, shadowRay.magnitude, color);
-                }
+            foreach (Light l in _scene.Lights)
+            {
+                bool inShadow = _scene.IsInShadow(intersection, l);
+                color = inShadow ? new Vector3(1, 1, 1) : new Vector3(0, 1, 1);
+                shadowRay = new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint);
+                _surface.DrawRay(shadowRay, _camera.Screen, shadowRay.magnitude, color);
+            }
         }
     }
 }
