@@ -4,21 +4,17 @@ namespace template
 {
     public abstract class Primitive : Object
     {
-        private bool _isMirror;
-        private bool _isGlass;
+        Material _material;
         private float _refractionIndex;
 
-        //TODO add materials and move this property to the material
-        public bool IsMirror
+        public Material Material
         {
-            get { return _isMirror; }
-            set { _isMirror = value; }
+            get { return _material; }
         }
 
-        public bool IsGlass
+        public bool IsReflective
         {
-            get { return _isGlass; }
-            set { _isGlass = value; }
+            get { return _material.IsReflective; }
         }
 
         public float RefractionIndex
@@ -27,14 +23,21 @@ namespace template
             set { _refractionIndex = value; }
         }
 
-        public Primitive(Vector3 position, Vector3 color) : base(position, color)
-        {
 
+
+        public Primitive(Vector3 position, Vector3 color, Material material) : base(position)
+        {
+            _material = material;
         }
 
         public virtual Intersection GetIntersection(VectorMath.Ray ray)
         {
             return null;
+        }
+
+        public Vector3 ComputeColor(Vector3 alpha)
+        {
+            return Material.Color * alpha;
         }
     }
 }

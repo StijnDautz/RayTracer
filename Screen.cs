@@ -3,10 +3,11 @@ using System.Drawing;
 
 namespace template
 {
-    public class Screen : Plane
+    public class Screen : Object
     {
         private float _scale = 512 / 10; //512x512 pixels in a 10x10 box
         private Point _resolution;
+        private Vector3 _normal;
         private Rectangle _dimensions;
         Vector3[] corners = new Vector3[4];
 
@@ -51,10 +52,11 @@ namespace template
             set { corners[3] = value; }
         }
 
-        public Screen(Vector3 position, Vector3 normal, Point resolution, Point dimensions) : base(position, normal, Vector3.Zero)
+        public Screen(Vector3 position, Vector3 normal, Point resolution, Point dimensions) : base(position)
         {
             _resolution = resolution;
             _dimensions = new Rectangle((int)(-dimensions.X / 2 + position.X), (int)(dimensions.Y / 2 + position.Z), dimensions.X, dimensions.Y);
+            _normal = normal;
             TopLeft = new Vector3(position.X - dimensions.X / 2, position.Y + dimensions.Y / 2, position.Z);
             TopRight = new Vector3(position.X + dimensions.X / 2, position.Y + dimensions.Y / 2, position.Z);
             BottomLeft = new Vector3(position.X - dimensions.X / 2, position.Y - dimensions.Y / 2, position.Z);

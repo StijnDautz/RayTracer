@@ -164,7 +164,7 @@ namespace template
                 if (p is Sphere)
                 {
                     Sphere s = p as Sphere;
-                    Circle(s.Position, s.Radius, screen, p.Color);
+                    Circle(s.Position, s.Radius, screen, p.Material.Color);
                 }
             }
             foreach (Light l in lights)

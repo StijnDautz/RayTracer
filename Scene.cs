@@ -70,5 +70,16 @@ namespace template
             //if no object was between the light and the intersection, then the intersection point isn't in a shadow and so we return false
             return false;
         }
+
+        public Vector3 GetIntersectionColor(Intersection intersection)
+        {
+            Vector3 color = Vector3.Zero;
+            foreach (Light l in _lights)
+            {
+                if (!IsInShadow(intersection, l))
+                { color += intersection.primitive.ComputeColor(l.DirectIllumination(intersection.IntersectionPoint, intersection.Normal)); }
+            }
+            return color;
+        }
     }
 }

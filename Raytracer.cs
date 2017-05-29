@@ -23,9 +23,7 @@ namespace template
             for (int x = 0; x < 512; x++) //instead of 0 -> resolution.X
             {
                 for (int y = 0; y < 512; y++)
-                {
-                    //TODO how to assign a color to a pixel, cast shadow ray function returns color and alle colors for one pixel are added to one color?
-                    //TODO re add magnitude variable to constructer to preven direction vector * 10
+                { 
                     _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
                 }
             }
@@ -50,23 +48,16 @@ namespace template
                 //if there was an intersection, compute the color to return
                 if (intersection != null)
                 {
-                    foreach (Light l in _scene.Lights)
-                    {
-                        if (!_scene.IsInShadow(intersection, l))
-                        {
-                            Vector3 alpha = DirectIllumination(intersection.IntersectionPoint, intersection.Normal, l);
-                            color.X += intersection.primitive.Color.X * alpha.X;
-                            color.Y += intersection.primitive.Color.Y * alpha.Y;
-                            color.Z += intersection.primitive.Color.Z * alpha.Z;
-                        }
-                    }
+                    //calculate the color at the intersection
+                    color = _scene.GetIntersectionColor(intersection);
 
                     //increase reflectionNum, so we do not get stuck in an infinite recursive loop
                     reflectionNum++;
 
                     //trace the reflective ray
                     Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                    TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum);
+                    if (intersection.primitive.IsReflective)
+                    { color += TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum); }
                 }
             }
             else { _rayCount++; }
@@ -104,19 +95,6 @@ namespace template
                     shadowRay = new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint);
                     _surface.DrawRay(shadowRay, _camera.Screen, shadowRay.magnitude, color);
                 }
-        }
-
-        /*
-         * LIGHTNING
-         */
-
-        private Vector3 DirectIllumination(Vector3 intersectionPoint, Vector3 normal, Light light)
-        {
-            Vector3 L = light.Position - intersectionPoint;
-            float dist = L.Length;
-            L *= (1.0f / dist);
-            float attenuation = 1 / (dist * dist);
-            return light.Color * Vector3.Dot(normal, L) * attenuation * light.Intensity;
         }
     }
 }
