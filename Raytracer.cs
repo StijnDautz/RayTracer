@@ -20,14 +20,15 @@ namespace template
 
         public void Render()
         {
+            Application.handleInput(_camera);
             for (int x = 0; x < 512; x++) //instead of 0 -> resolution.X
             {
                 for (int y = 0; y < 512; y++)
                 {
-                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position + _camera.Offset, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
+                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
                 }
             }
-
+            _camera.Screen.MoveCameraX(0.001f);
             //draw the primivites in the scene over the casted rays
             _surface.DrawPrimitives(_scene.Primitives, _scene.Lights, _camera.Screen);
         }
@@ -35,6 +36,7 @@ namespace template
         private Vector3 TraceRay(VectorMath.Ray ray, int reflectionNum)
         {
             Vector3 color = Vector3.Zero;
+            
 
             //if this ray isn't recursively called more than maxReflection times trace this ray, 
             //else increase rayCount, as the reflections have all been drawn and a new primary ray is going to be shot, instead of a reflective ray
@@ -49,7 +51,7 @@ namespace template
                 if (intersection != null)
                 {
                     //calculate the color at the intersection
-                    color = _scene.GetIntersectionColor(intersection);
+                    color = (1 - intersection.primitive.Material.ReflectionIndex) * _scene.GetIntersectionColor(intersection);
 
                     //increase reflectionNum, so we do not get stuck in an infinite recursive loop
                     reflectionNum++;
@@ -59,7 +61,7 @@ namespace template
                     if (intersection.primitive.Material.IsReflective)
                     {
                         Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                        color += TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum);
+                        color += (intersection.primitive.Material.ReflectionIndex) * TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum);
                     }
                     if (intersection.primitive.Material.IsGlass)
                     {

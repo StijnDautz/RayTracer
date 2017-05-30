@@ -22,8 +22,8 @@ namespace template {
 
             Scene scene = new Scene();
             scene.AddPrimitive(new Sphere(new Vector3(2, 0, 4), 1, mirror));      
-            scene.AddPrimitive(new Sphere(new Vector3(4, 0, 2), 1, glass));
-            scene.AddPrimitive(new Sphere(new Vector3(-1, 0, 1), 1, glass));
+            scene.AddPrimitive(new Sphere(new Vector3(4, 0, 2), 1, mirror));
+            scene.AddPrimitive(new Sphere(new Vector3(-1, 0, 1), 1, mirror));
             scene.AddPrimitive(new Plane(new Vector3(0, -1, 0), new Vector3(0, 1, 0), wall));
             scene.AddPrimitive(new Plane(new Vector3(0, 5, 0), new Vector3(0, -1, 0), wall));
             scene.AddPrimitive(new Plane(new Vector3(-4, 0, 0), new Vector3(1, 0, 0), wall));
@@ -33,7 +33,7 @@ namespace template {
             scene.AddLight(new Light(new Vector3(3, 0, -1), new Vector3(1f, 1f, 1f), new Vector3(3f, 3f, 3f)));
 
 
-            Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8), new Vector3(0, 0, 0)); //WERKT NOG NIET!!!! Kan nu alleen screen position veranderen met de offset (die live aan te passen zou moeten kunnen zijn) maar ik vat jouw screen algoritme niet 100% en heb geen zin om shit op te fcking. Tering dit is een lange regel.
+            Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8), new Vector3(0, 0, 0));
             Camera camera = new Camera(new Vector3(0, 0, -2), new Vector3(0, 0, 1), scr, new Vector3(0, 0, 0)); //Last vector3 changes camera position
             _raytracer = new Raytracer(scene, camera, surface);
         }

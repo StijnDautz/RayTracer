@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 using System.Drawing;
 
 namespace template
@@ -10,8 +11,8 @@ namespace template
         private Vector3 _normal;
         private Rectangle _dimensions;
         Vector3[] corners = new Vector3[4];
-        private Vector3 _offset;
-
+        private Vector3 _screenDistance;
+        private float currentAngle = 0;
         public float Scale
         {
             get
@@ -22,11 +23,6 @@ namespace template
             {
                 _scale = value;
             }
-        }
-
-        public Vector3 Offset
-        {
-            get { return _offset; }
         }
 
         public Point Resolution
@@ -59,6 +55,12 @@ namespace template
             set { corners[3] = value; }
         }
 
+        public Vector3 ScreenDistance
+        {
+            get { return _screenDistance; }
+            set { _screenDistance = value; }
+        }
+
         public Screen(Vector3 position, Vector3 normal, Point resolution, Point dimensions, Vector3 offset) : base(position)
         {
             _resolution = resolution;
@@ -68,13 +70,21 @@ namespace template
             TopRight = new Vector3(position.X + dimensions.X / 2, position.Y + dimensions.Y / 2, position.Z);
             BottomLeft = new Vector3(position.X - dimensions.X / 2, position.Y - dimensions.Y / 2, position.Z);
             BottomRight = new Vector3(position.X + dimensions.X / 2, position.Y - dimensions.Y / 2, position.Z);
+        }
 
+        public void MoveCameraX(float offsetAngle)
+        {
+            for (int i = 0; i < corners.Length; i++)
+            {
+                //corners[i].X = (float)Math.Cos(Vector3.CalculateAngle(corners[i], new Vector3(, 0, 1)) + offsetAngle);
+                //corners[i].Z = (float)Math.Sin(Vector3.CalculateAngle(corners[i], Vector3.Zero) + offsetAngle);
+            }
         }
 
         public Vector3 ConvertToWorldCoords(Point p)
         {
             //given a positional vector v1 and two directional vectors v2 and v3, which determine a plane, any point on this plane can be defined by v1 + t1 * v2 + t2 * v3
-            return _offset + TopLeft + ((TopRight - TopLeft) / _resolution.X) * p.X + ((BottomLeft - TopLeft) / _resolution.Y) * p.Y;
+            return TopLeft + ((TopRight - TopLeft) / _resolution.X) * p.X + ((BottomLeft - TopLeft) / _resolution.Y) * p.Y;
         }
 
         //TODO make world dimension variable

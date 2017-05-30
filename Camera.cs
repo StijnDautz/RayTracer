@@ -10,7 +10,7 @@ namespace template
         public Vector3 _offset;
         public Vector3 Position
         {
-            get { return _position; }
+            get { return _position + _offset; }
             set
             {
                 _position = value;
@@ -45,6 +45,7 @@ namespace template
             _direction = direction;
             _screen = screen;
             _offset = offset;
+            screen.ScreenDistance = (_position - screen.Position);
         }
     }
 }
