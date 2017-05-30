@@ -33,8 +33,8 @@ namespace template {
             //scene.AddLight(new Light(new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)));
             scene.AddLight(new AreaLight(new Vector3(-2, 1, -2), new Vector3(1, 1, 1), new Vector3(1f, 1f, 1f), new Vector3(-1, 0, 0), new Vector3(0, 2, 0.5f), new Point(1, 1)));
 
-            Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8));
-            Camera camera = new Camera(new Vector3(0, 0, -2), new Vector3(0, 0, 1), scr);
+            Screen scr = new Screen(new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Point(512, 512), new Point(8, 8), new Vector3(0, 0, 0));
+            Camera camera = new Camera(new Vector3(0, 0, -2), new Vector3(0, 0, 1), scr, new Vector3(0, 0, 0)); //Last vector3 changes camera position
             _raytracer = new Raytracer(scene, camera, surface);
         }
 

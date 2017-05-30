@@ -6,7 +6,7 @@ namespace template
     {
         private Vector3 _normal;
         
-        public Plane(Vector3 position, Vector3 normal, Vector3 color, Material material) : base(position, color, material)
+        public Plane(Vector3 position, Vector3 normal, Material material) : base(position, material)
         {
             _normal = normal;
         }

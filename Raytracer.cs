@@ -23,6 +23,7 @@ namespace template
         {
             Vector3 color = Vector3.Zero;
             float offset = 1f / antialliasingRayCap;
+            Application.handleInput(_camera);
             for (int x = 0; x < 512; x++) //instead of 0 -> resolution.X
             {
                 for (int y = 0; y < 512; y++)
@@ -37,6 +38,8 @@ namespace template
                     //average color!!!!!!
                     _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(color / (antialliasingRayCap * antialliasingRayCap));
                     color = Vector3.Zero;
+                {
+                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
                 }
             }
 
@@ -61,15 +64,26 @@ namespace template
                 if (intersection != null)
                 {
                     //calculate the color at the intersection
-                    color = _scene.GetIntersectionColor(intersection);
+                    color = (1 - intersection.primitive.Material.ReflectionIndex) * _scene.GetIntersectionColor(intersection);
 
                     //increase reflectionNum, so we do not get stuck in an infinite recursive loop
                     reflectionNum++;
 
                     //trace the reflective ray
-                    Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
-                    if (intersection.primitive.IsReflective)
-                    { color += TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum); }
+
+                    if (intersection.primitive.Material.IsReflective)
+                    {
+                        Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
+                        color += (intersection.primitive.Material.ReflectionIndex) * TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum);
+                    }
+                    if (intersection.primitive.Material.IsGlass)
+                    {
+                        Vector3 refraction = VectorMath.Refract(ray, intersection.Normal, intersection.primitive.Material.RefractionIndex);
+                        if (ray.inSphere) ray.inSphere = false;
+                        else ray.inSphere = true;
+                        color = TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, refraction), ++reflectionNum);
+                    }
+
                 }
             }
             _rayCount++;

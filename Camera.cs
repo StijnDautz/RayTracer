@@ -6,12 +6,11 @@ namespace template
     {
         private Vector3 _position;
         private Vector3 _direction;
-        private float _offset;
         private Screen _screen;
-
+        public Vector3 _offset;
         public Vector3 Position
         {
-            get { return _position; }
+            get { return _position + _offset; }
             set
             {
                 _position = value;
@@ -29,7 +28,7 @@ namespace template
             }
         }
 
-        public float Offset
+        public Vector3 Offset
         {
             get { return _offset; }
             set { _offset = value; }
@@ -40,11 +39,13 @@ namespace template
             get { return _screen; }
         }
 
-        public Camera(Vector3 position, Vector3 direction, Screen screen)
+        public Camera(Vector3 position, Vector3 direction, Screen screen, Vector3 offset)
         {
             _position = position;
             _direction = direction;
             _screen = screen;
+            _offset = offset;
+            screen.ScreenDistance = (_position - screen.Position);
         }
     }
 }

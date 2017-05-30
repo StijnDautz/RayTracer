@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 
 namespace template
 {
@@ -9,12 +10,14 @@ namespace template
             public Vector3 origin;
             public Vector3 direction;
             public float magnitude;
+            public bool inSphere;
 
-            public Ray(Vector3 o, Vector3 d)
+            public Ray(Vector3 o, Vector3 d, bool inSphere = false)
             {
                 origin = o;
                 magnitude = d.Length;
                 direction = d.Normalized();
+                this.inSphere = inSphere;
             }
 
             public Vector3 Position
@@ -27,6 +30,16 @@ namespace template
         {
             return incoming - normal * (2 * Vector3.Dot(incoming, normal));
         }
+
+        public static Vector3 Refract(Ray incoming, Vector3 normal, float refractionIndex)
+        {
+            float n;
+            float angle = Vector3.Dot(-normal, incoming.direction); //Cos(angle)
+            if (incoming.inSphere) n = refractionIndex; //refractionIndex medium 1 / medium 2
+            else n = 1 / refractionIndex;
+            return Vector3.Normalize(n * incoming.direction + (n*angle - (float)Math.Sqrt(1 - n*n*(1-(angle)*(angle)))) * normal);
+        }
+
 
         public static int GetColorInt(Vector3 color)
         {
