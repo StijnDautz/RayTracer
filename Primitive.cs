@@ -5,7 +5,7 @@ namespace template
 {
     public abstract class Primitive : Object
     {
-        Material _material;
+        private Material _material;
         private float _refractionIndex;
 
         public Material Material
@@ -24,10 +24,12 @@ namespace template
             set { _refractionIndex = value; }
         }
 
-        public Primitive(Vector3 position, Vector3 color, Material material) : base(position)
+        public Primitive(Vector3 position, Material material) : base(position)
         {
             _material = material;
         }
+
+
 
         public virtual Intersection GetIntersection(VectorMath.Ray ray)
         {

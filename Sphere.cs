@@ -8,7 +8,7 @@ namespace template
     {
         private float _radius;
 
-        public Sphere(Vector3 position, float radius, Material material) : base(position, material)
+        public Sphere(Vector3 position, int radius, Vector3 color, Material material) : base(position, material)
         {
             _radius = radius;
         }
@@ -26,7 +26,7 @@ namespace template
             float c = centerToOrigin.LengthSquared - _radius * _radius;
 
             float d = b * b - 4 * a * c;
-            if(d < 0)
+            if (d < 0)
             { return null; }
             else
             {

@@ -38,16 +38,14 @@ namespace template
                     //average color!!!!!!
                     _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(color / (antialliasingRayCap * antialliasingRayCap));
                     color = Vector3.Zero;
-                {
-                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
-                }
+                    }
             }
 
             //draw the primivites in the scene over the casted rays
             _surface.DrawPrimitives(_scene.Primitives, _scene.Lights, _camera.Screen);
         }
 
-        private Vector3 TraceRay(VectorMath.Ray ray, int reflectionNum)
+        public Vector3 TraceRay(VectorMath.Ray ray, int reflectionNum)
         {
             Vector3 color = Vector3.Zero;
 
@@ -76,14 +74,6 @@ namespace template
                         Vector3 reflection = VectorMath.Reflect(ray.direction, intersection.Normal);
                         color += (intersection.primitive.Material.ReflectionIndex) * TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum);
                     }
-                    if (intersection.primitive.Material.IsGlass)
-                    {
-                        Vector3 refraction = VectorMath.Refract(ray, intersection.Normal, intersection.primitive.Material.RefractionIndex);
-                        if (ray.inSphere) ray.inSphere = false;
-                        else ray.inSphere = true;
-                        color = TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, refraction), ++reflectionNum);
-                    }
-
                 }
             }
             _rayCount++;

@@ -5,8 +5,8 @@ namespace template
     public class Plane : Primitive
     {
         private Vector3 _normal;
-        
-        public Plane(Vector3 position, Vector3 normal, Material material) : base(position, material)
+
+        public Plane(Vector3 position, Vector3 normal, Vector3 color, Material material) : base(position, material)
         {
             _normal = normal;
         }
@@ -15,7 +15,7 @@ namespace template
         {
             //if the ray is not parralel to the plane, calculate the intersection point
             float dotN_R = Vector3.Dot(_normal, ray.direction);
-            if(dotN_R < 0)
+            if (dotN_R < 0)
             {
                 Vector3 p = ray.origin + (-(Vector3.Dot(ray.origin, _normal) + Position.Length) / dotN_R) * ray.direction;
                 return new Intersection(this, p, _normal, ray, (p - ray.origin).Length);

@@ -21,7 +21,7 @@ namespace template {
             Material floor = new Material(new Vector3(0, 0, 0), false, true);
 
             Scene scene = new Scene();
-            scene.AddPrimitive(new Sphere(new Vector3(0, 1, 0.5f), 1, new Vector3(1.0f, 0.5f, 0.5f), mirror));      
+            scene.AddPrimitive(new Sphere(new Vector3(0, 1, 0.5f), 1, new Vector3(1.0f, 0.5f, 0.5f), mirror));
             //scene.AddPrimitive(new Sphere(new Vector3(4, 0, 2), 1, new Vector3(0.5f, 1.0f, 0.5f), mirror));
             //scene.AddPrimitive(new Sphere(new Vector3(-1, 0, 1), 1, new Vector3(0.5f, 0.5f, 1.0f), mirror));
             scene.AddPrimitive(new Plane(new Vector3(0, -1, 0), new Vector3(0, 1, 0), new Vector3(1f, 1f, 1f), floor));

@@ -38,8 +38,13 @@ namespace template
             _color = color;
             _isReflective = isReflective;
             _reflectionIndex = reflectionIndex;
-            _isGlass = isGlass;
             _refractionIndex = refractionIndex;
+        }
+
+        public Vector3 ComputeColor(Vector3 alpha, Vector3 intersection)
+        {
+            Vector3 color = _textured ? (int)intersection.X % 2 == 0 ? Vector3.Zero : new Vector3(1, 1, 1) : _color;
+            return color * alpha;
         }
     }
 }
