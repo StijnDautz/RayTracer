@@ -23,3 +23,12 @@ C:\Users\dautz\Documents\School\Graphics\RayTracer\bin\Debug\template.exe
 C:\Users\dautz\Documents\School\Graphics\RayTracer\bin\Debug\template.pdb
 C:\Users\dautz\Documents\School\Graphics\RayTracer\bin\Debug\OpenTK.dll
 C:\Users\dautz\Documents\School\Graphics\RayTracer\bin\Debug\OpenTK.dll.config
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\obj\Debug\template.csprojResolveAssemblyReference.cache
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\obj\Debug\template.exe
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\obj\Debug\template.pdb
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\bin\Debug\template.exe.config
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\bin\Debug\template.exe
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\bin\Debug\template.pdb
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\bin\Debug\OpenTK.dll
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\bin\Debug\OpenTK.dll.config
+D:\Users\Stijn\Documents\School\Graphics\RayTracer\bin\Debug\Content\earth.bmp

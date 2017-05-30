@@ -9,7 +9,8 @@ namespace template
         private Camera _camera;
         private Surface _surface;
         private int _rayCount = 0; //So that not EVERY debug ray gets drawn
-        private int maxReflection = 8;
+        private int maxReflection = 1;
+        private int antialliasingRayCap = 4;
 
         public Raytracer(Scene scene, Camera camera, Surface surface)
         {
@@ -20,11 +21,22 @@ namespace template
 
         public void Render()
         {
+            Vector3 color = Vector3.Zero;
+            float offset = 1f / antialliasingRayCap;
             for (int x = 0; x < 512; x++) //instead of 0 -> resolution.X
             {
                 for (int y = 0; y < 512; y++)
-                { 
-                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Point(x, y)) - _camera.Position)), 0));
+                {
+                    for (int i = 0; i < antialliasingRayCap; i++)
+                    {
+                        for(int j = 0; j < antialliasingRayCap; j++)
+                        {
+                            color += TraceRay(new VectorMath.Ray(_camera.Position, (_camera.Screen.ConvertToWorldCoords(new Vector2(x + i * offset, y + j * offset)) - _camera.Position)), 0);
+                        }
+                    }
+                    //average color!!!!!!
+                    _surface.pixels[x + y * 1024] = VectorMath.GetColorInt(color / (antialliasingRayCap * antialliasingRayCap));
+                    color = Vector3.Zero;
                 }
             }
 
@@ -43,7 +55,7 @@ namespace template
                 //Cast a ray from the camera through a point on the 2D screen and find the primitive in the world it hits first
                 Intersection intersection = _scene.GetClosestIntersection(ray);
 
-                DrawDebugRays(intersection, ray, _rayCount);
+                DrawDebugRays(intersection, ray);
 
                 //if there was an intersection, compute the color to return
                 if (intersection != null)
@@ -60,7 +72,7 @@ namespace template
                     { color += TraceRay(new VectorMath.Ray(intersection.IntersectionPoint, reflection), reflectionNum); }
                 }
             }
-            else { _rayCount++; }
+            _rayCount++;
             return color;
         }
 
@@ -68,9 +80,9 @@ namespace template
          * DEBUG
          */
 
-        private void DrawDebugRays(Intersection intersection, VectorMath.Ray ray, int rayCount)
+        private void DrawDebugRays(Intersection intersection, VectorMath.Ray ray)
         {
-            if (intersection != null && intersection.IntersectionPoint.Y == 0)
+            if (intersection != null && intersection.IntersectionPoint.Y == 0 && _rayCount % 1000 == 0)
             {
                 DrawTracedRay(intersection, ray);
                 if (intersection != null)
@@ -88,13 +100,13 @@ namespace template
         {
             VectorMath.Ray shadowRay;
             Vector3 color;
-                foreach (Light l in _scene.Lights)
-                {
-                    bool inShadow = _scene.IsInShadow(intersection, l);
-                    color = inShadow ? new Vector3(1, 1, 1) : new Vector3(0, 1, 1);
-                    shadowRay = new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint);
-                    _surface.DrawRay(shadowRay, _camera.Screen, shadowRay.magnitude, color);
-                }
+            foreach (Light l in _scene.Lights)
+            {
+                bool inShadow = l.InShadow(intersection, l.Position, _scene);
+                color = inShadow ? new Vector3(1, 1, 1) : new Vector3(0, 1, 1);
+                shadowRay = new VectorMath.Ray(intersection.IntersectionPoint, l.Position - intersection.IntersectionPoint);
+                _surface.DrawRay(shadowRay, _camera.Screen, shadowRay.magnitude, color);
+            }
         }
     }
 }

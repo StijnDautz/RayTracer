@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System.Drawing;
 
 namespace template
 {
@@ -23,8 +24,6 @@ namespace template
             set { _refractionIndex = value; }
         }
 
-
-
         public Primitive(Vector3 position, Vector3 color, Material material) : base(position)
         {
             _material = material;
@@ -35,9 +34,15 @@ namespace template
             return null;
         }
 
-        public Vector3 ComputeColor(Vector3 alpha)
+        public virtual Point GenerateUV(Vector3 worldCoords)
         {
-            return Material.Color * alpha;
+            return new Point(0, 0);
+        }
+
+        public Vector3 ComputeColor(Intersection intersection, Light l, Scene scene)
+        {
+            //convert the 3d intersectionpoint to a 2d point on the texture of the material
+            return Material.ComputeColor(l.ComputeIllumination(intersection, scene), intersection.IntersectionPoint);
         }
     }
 }

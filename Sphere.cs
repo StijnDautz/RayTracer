@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using System;
+using System.Drawing;
 
 namespace template
 {
@@ -18,24 +19,29 @@ namespace template
         }
 
         public override Intersection GetIntersection(VectorMath.Ray ray)
-        {          
+        {
             Vector3 centerToOrigin = ray.origin - Position;
+            float a = ray.direction.LengthSquared;
             float b = 2 * Vector3.Dot(ray.direction, centerToOrigin);
+            float c = centerToOrigin.LengthSquared - _radius * _radius;
 
-            //a is always one (dotproduct with itself)
-            float d = b * b - 4 * (centerToOrigin.Length * centerToOrigin.Length - _radius * _radius);
-            if (d < 0)
+            float d = b * b - 4 * a * c;
+            if(d < 0)
             { return null; }
             else
             {
-                d = (float)Math.Sqrt(d);
-                float t0 = -b - d;
-                float t1 = -b + d;
-                t0 = t0 < t1 ? t0 : t1;
+                float sqrtD = (float)Math.Sqrt(d);
+                float t0 = (-b + sqrtD) / (2 * a);
+                float t1 = (-b - sqrtD) / (2 * a);
+                float distance = Math.Min(t0, t1);
+                Vector3 intersectionPoint = ray.origin + distance * ray.direction;
+                return new Intersection(this, intersectionPoint, (intersectionPoint - Position).Normalized(), ray, distance);
+            }
+        }
 
-                Vector3 intersectionPoint = ray.origin + ray.direction * 0.5f * t0;
-                return new Intersection(this, intersectionPoint, Vector3.Normalize(intersectionPoint - Position), ray, (intersectionPoint - ray.origin).Length);
-            }     
+        public override Point GenerateUV(Vector3 worldCoords)
+        {
+            return new Point((int)(0.5 + Math.Atan2(worldCoords.Z, worldCoords.X) / (2 * Math.PI)), (int)(0.5 + Math.Asin(worldCoords.Y) / Math.PI));
         }
     }
 }

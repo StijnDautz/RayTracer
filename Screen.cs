@@ -63,7 +63,7 @@ namespace template
             BottomRight = new Vector3(position.X + dimensions.X / 2, position.Y - dimensions.Y / 2, position.Z);
         }
 
-        public Vector3 ConvertToWorldCoords(Point p)
+        public Vector3 ConvertToWorldCoords(Vector2 p)
         {
             //given a positional vector v1 and two directional vectors v2 and v3, which determine a plane, any point on this plane can be defined by v1 + t1 * v2 + t2 * v3
             return TopLeft + ((TopRight - TopLeft) / _resolution.X) * p.X + ((BottomLeft - TopLeft) / _resolution.Y) * p.Y;

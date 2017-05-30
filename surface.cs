@@ -36,6 +36,11 @@ namespace template
             GL.End();
             GL.Disable(EnableCap.Blend);
         }
+
+        public int GetColorAt(Point uv)
+        {
+            return bitmap.pixels[uv.X + uv.Y * bitmap.width];
+        }
     }
     public class Surface
     {

@@ -34,5 +34,11 @@ namespace template
             color *= 255;
             return ((int)color.Z << 0) | ((int)color.Y << 8) | ((int)color.X << 16);
         }
+
+        public static Vector3 GetColorVector3(int color)
+        {
+            Vector3 c = new Vector3(color >> 16 / 255, color >> 8 / 255, color / 255);
+            return c;
+        }
     }
 }
